@@ -10,6 +10,7 @@ const app = express();
 // To get access to the public folder and link static files like css
 app.use(express.static(path.join(__dirname, 'public')));
 
+// This allows you to access form data submitted in POST requests via req.body in your route handlers
 app.use(bodyParser.urlencoded({extended: false}));
 
 app.use('/admin', adminRoutes);
