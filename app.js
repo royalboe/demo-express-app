@@ -7,6 +7,9 @@ const shopRoutes = require('./routes/shop');
 
 const app = express();
 
+// To get access to the public folder and link static files like css
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(bodyParser.urlencoded({extended: false}));
 
 app.use('/admin', adminRoutes);
