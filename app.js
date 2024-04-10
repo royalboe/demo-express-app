@@ -4,23 +4,26 @@ const path = require('path');
 
 const adminData = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
-const expressHbs = require("express-handlebars");
+
+// const expressHbs = require("express-handlebars");
 
 const app = express();
 
 // To connect the app engine to use handbar to parse to html code
-app.engine(
-    'hbs',
-    expressHbs({
-        layoutsDir: 'views/layouts/',
-        defaultLayout: 'main-layout',
-        extname: 'hbs'
-    })
-)
+// This configures the hbs 
+// app.engine(
+//     'hbs',
+//     expressHbs({
+//         layoutsDir: 'views/layouts/',
+//         defaultLayout: 'main-layout',
+//         extname: 'hbs'
+//     })
+// )
 
 // Lets us set any value golbally on our express application
 // app.set('view engine', 'pug'); // set view engine to pug
-app.set('view engine', 'hbs') // Set view engine to hbs
+// app.set('view engine', 'hbs') // Set view engine to hbs
+app.set('view engine', 'ejs') // Set view engine to ejs
 app.set('views', 'views');
 // To get access to the public folder and link static files like css
 app.use(express.static(path.join(__dirname, 'public')));
