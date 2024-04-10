@@ -7,4 +7,7 @@ npm install --save express
 npm install body-parser --save
 
 # For HTML templating
-npm install --save ejs pug express-handlebars
+npm install --save ejs pug
+
+# Install version 3 due to a breaking change
+npm install --save express-handlebars@3.0
