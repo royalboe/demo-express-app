@@ -9,7 +9,7 @@
        <!-- Checks for products is not empty, if it is not loop through and populate the screen, if empty output no products -->
         <% if (hasProducts) { %>
             <div class="grid">
-                <% for (let product of prods) { %>
+                <% for (let product of products) { %>
                     <article class="card product-item">
                         <header class="card__header">
                             <h1 class="product__title"><%= product.title %></h1>
