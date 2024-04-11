@@ -2,7 +2,7 @@
 products = [];
 
 // Product model class
-exports.product = class Product
+module.exports = class Product
 {
     // Constructor to instantiate products
     constructor(t)
