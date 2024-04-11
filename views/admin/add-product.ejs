@@ -8,9 +8,29 @@
 
     <main>
         <form class="product-form" action="/admin/add-product" method="POST">
+            
+            <!-- For Book Title -->
             <div class="form-control">
                 <label for="title">Title</label>
                 <input type="text" name="title" id="title">
+            </div>
+            
+            <!-- For ImageURL -->
+            <div class="form-control">
+                <label for="ImageURL">ImageURL</label>
+                <input type="text" name="ImageURL" id="ImageURL">
+            </div>
+            
+            <!-- For price -->
+            <div class="form-control">
+                <label for="price">Price</label>
+                <input type="number" name="price" id="price" step="0.01">
+            </div>
+            
+            <!-- For Description -->
+            <div class="form-control">
+                <label for="description">Description</label>
+                <textarea name="description" id="description">
             </div>
 
             <button class="btn" type="submit">Add Product</button>
