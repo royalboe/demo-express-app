@@ -18,23 +18,26 @@ const getProductsFromFIle = cb => {
 
 // Product model class
 module.exports = class Product {
-    // Constructor to instantiate products
-    constructor(t) {
-        this.title = t;
-    }
+	// Constructor to instantiate products
+	constructor(title, imageURL, description, price) {
+        this.title = title;
+        this.imageURL = imageURL;
+        this.description = description;
+        this.price = price;
+	}
 
-    // Method to save the product
-    save() {
-        getProductsFromFIle((products) => {
-          products.push(this);
-          fs.writeFile(p, JSON.stringify(products), (err) => {
-            console.log(err);
-          });
-        });
-    }
+	// Method to save the product
+	save() {
+		getProductsFromFIle((products) => {
+			products.push(this);
+			fs.writeFile(p, JSON.stringify(products), (err) => {
+				console.log(err);
+			});
+		});
+	}
 
-    // Static method to return products
-    static fetchAll(cb) {
-        getProductsFromFIle(cb);
-    }
+	// Static method to return products
+	static fetchAll(cb) {
+		getProductsFromFIle(cb);
+	}
 };
