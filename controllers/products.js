@@ -19,7 +19,7 @@ exports.postProducts = (req, res, next) => {
 
 exports.getProducts = (req, res, next) => {
   Product.fetchAll(products => {
-    res.render("shop", {
+    res.render("shop/view-products", {
     prods: products,
     docTitle: "Shop",
     path: "/",
