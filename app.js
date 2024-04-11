@@ -2,8 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 
-const adminData = require('./routes/admin');
+const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
+const errorController = require('./controllers/404')
 
 // const expressHbs = require("express-handlebars");
 
@@ -31,14 +32,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 // This allows you to access form data submitted in POST requests via req.body in your route handlers
 app.use(bodyParser.urlencoded({extended: false}));
 
-app.use('/admin', adminData.router);
+app.use('/admin', adminRoutes);
 
 app.use(shopRoutes);
 
-app.use((req, res, next) => {
-    res.status(404).render('404', {
-        docTitle: 'Page Not Found'
-    });
-});
+app.use(errorController.error);
 
 app.listen(3000);
