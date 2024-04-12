@@ -1,31 +1,31 @@
 {
-  "name": "nodejs-complete-guide",
-  "version": "1.0.0",
-  "description": "A complete nodejs guide",
-  "main": "app.js",
-  "scripts": {
-    "test": "echo testing...",
-    "start": "nodemon app.js",
-    "start-server": "node app.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/royalboe/nodejs-demo.git"
-  },
-  "author": "Ayomide Johnson Salami",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/royalboe/nodejs-demo/issues"
-  },
-  "homepage": "https://github.com/royalboe/nodejs-demo#readme",
-  "devDependencies": {
-    "nodemon": "^3.1.0"
-  },
-  "dependencies": {
-    "body-parser": "^1.20.2",
-    "ejs": "^3.1.9",
-    "express": "^4.19.2",
-    "express-handlebars": "3.0",
-    "pug": "^3.0.2"
-  }
+	"name": "demo-express-nodejs",
+	"version": "1.0.0",
+	"description": "A complete nodejs guide",
+	"main": "app.js",
+	"scripts": {
+		"test": "echo testing...",
+		"start": "nodemon app.js",
+		"start-server": "node app.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/royalboe/demo-express-app.git"
+	},
+	"author": "Ayomide Johnson Salami",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/royalboe/demo-express-app/issues"
+	},
+	"homepage": "https://github.com/royalboe/demo-express-app#readme",
+	"devDependencies": {
+		"nodemon": "^3.1.0"
+	},
+	"dependencies": {
+		"body-parser": "^1.20.2",
+		"ejs": "^3.1.9",
+		"express": "^4.19.2",
+		"express-handlebars": "3.0",
+		"pug": "^3.0.2"
+	}
 }
