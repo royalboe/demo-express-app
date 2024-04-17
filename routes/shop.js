@@ -6,7 +6,7 @@ const router = express.Router();
 
 // Router for the home path
 // / => GET Method
-router.get('/', shopController.getProducts);
+router.get('/', shopController.getIndex);
 
 // Router for the products path
 // /products => GET Method
