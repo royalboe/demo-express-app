@@ -12,6 +12,10 @@ router.get('/', shopController.getIndex);
 // /products => GET Method
 router.get('/products', shopController.getProducts);
 
+// Router for the product path
+// /products/:productId => GET Method
+router.get('/products/:productId', shopController.getProductDetails);
+
 // Router for the orders path
 // /orders => GET Method
 router.get('/orders', shopController.getOrders);
@@ -28,9 +32,6 @@ router.get('/cart', shopController.getCart);
 // // /orders => GET Method
 // router.get('/orders', shopController.getOrders);
 
-// // Router for the product path
-// // /product/:productId => GET Method
-// router.get('/product/:productId', shopController.getProduct);
 
 // // Router for the add-to-cart path
 // // /add-to-cart => POST Method
