@@ -41,6 +41,10 @@ form {
   display: flex;
 }
 
+.centred {
+  text-align: center;
+}
+
 .main-header__item {
   margin: 0 1rem;
   padding: 0;

@@ -15,15 +15,14 @@ exports.getProducts = (req, res, next) => {
 // Renders product-details view
 exports.getProductDetails = (req, res, next) => {
   const prodId = req.params.productId;
-  console.log(prodId);
-  res.redirect("/products");
-  // Product.findById(prodId, product => {
-  //   res.render("shop/product-details", {
-  //     product: product,
-  //     docTitle: product.title,
-  //     path: "/products",
-  //   });
-  // });
+  // console.log(prodId);
+  Product.findById(prodId, product => {
+    res.render("shop/product-details", {
+      product: product,
+      docTitle: product.title,
+      path: "/products",
+    });
+  });
 }
 
 // Renders index view for home

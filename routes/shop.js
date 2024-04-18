@@ -14,7 +14,7 @@ router.get('/products', shopController.getProducts);
 
 // Router for the product path
 // /products/:productId => GET Method
-router.get('/products/:productId', shopController.getProductDetails);
+router.get('/product/:productId', shopController.getProductDetails);
 
 // Router for the orders path
 // /orders => GET Method

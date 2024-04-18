@@ -3,4 +3,19 @@
 
     <body>
         <%- include('../includes/navigation.ejs') %>
+        <main class="centred">
+            <h2>
+                <%= product.title %>
+            </h2>
+            <hr>
+            <img src="<%= product.imageURL %>" alt="<%= product.title %>">
+            <hr>
+            <h2>
+                $<%= product.price %>
+            </h2>
+            <hr>
+            <h2>
+                <%= product.description %>
+            </h2>
+        </main>
         <%- include('../includes/end.ejs') %>
