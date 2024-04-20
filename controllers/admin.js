@@ -5,9 +5,6 @@ exports.addProducts = (req, res, next) => {
 	res.render("admin/add-product", {
 		docTitle: "Add Product",
 		path: "/admin/add-product",
-		formsCSS: true,
-		productCSS: true,
-		activeAddProduct: true,
 	});
 };
 
@@ -21,6 +18,19 @@ exports.postProducts = (req, res, next) => {
 	const product = new Product(title, imageURL, description, price);
 	product.save();
 	res.redirect("/");
+};
+
+// To edit a single product
+exports.editProduct = (req, res, next) => {
+	const editMode = req.query.edit
+	if (!editMode) {
+		return res.redirect("/")
+	}
+	res.render("admin/edit-product", {
+		editing: editMode,
+		docTitle: "Edit Product",
+		path: "/admin/edit-product",
+	});
 };
 
 // Controller to render the admin product page
