@@ -3,22 +3,11 @@ const path = require("path");
 
 const rootDir = require("../util/path");
 
-const p = path.join(rootDir, "data", "cart.json");
-
-// Helper function to help retrieve product from file
-const getProductsFromFIle = (cb) => {
-	fs.readFile(p, (err, fileContent) => {
-		if (err) {
-			cb([]);
-		} else {
-			cb(JSON.parse(fileContent));
-		}
-	});
-};
+const pathToFile = path.join(rootDir, "data", "cart.json");
 
 module.exports = class Cart {
   static addProduct(id, productPrice) {
-    fs.readFile(p, (err, fileContent) => {
+    fs.readFile(pathToFile, (err, fileContent) => {
       let cart = { products: [], totalPrice: 0 };
       if (!err) {
         cart = JSON.parse(fileContent);
@@ -26,7 +15,7 @@ module.exports = class Cart {
 
       // Analyse the cart and find existing product
       const existingProductIndex = cart.products.findIndex(
-        (prod) => prod.id === id
+        prod => prod.id === id
       );
       const existingProduct = cart.products[existingProductIndex];
       let updatedProduct;
@@ -40,7 +29,8 @@ module.exports = class Cart {
         cart.products = [...cart.products, updatedProduct];
       }
       cart.totalPrice = cart.totalPrice + +productPrice;
-      fs.writeFile(p, JSON.stringify(cart), (err) => {
+      cart.products = [...cart.products];
+      fs.writeFile(pathToFile, JSON.stringify(cart), (err) => {
         console.log(err);
       });
     });
