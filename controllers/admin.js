@@ -15,7 +15,7 @@ exports.postProducts = (req, res, next) => {
 	const price = req.body.price;
 	const description = req.body.description;
 
-	const product = new Product(title, imageURL, description, price);
+	const product = new Product(null, title, imageURL, description, price);
 	product.save();
 	res.redirect("/");
 };
@@ -51,3 +51,21 @@ exports.getProducts = (req, res, next) => {
 		});
 	});
 };
+
+
+exports.postEditProduct = (req, res, next) => {
+	const productId = req.body.productId;
+	const updatedTitle = req.body.title;
+	const updatedImageURL = req.body.imageURL;
+	const updatedPrice = req.body.price;
+	const updatedDescription = req.body.description;
+	const updatedProduct = new Product(
+		updatedTitle,
+		updatedImageURL,
+		updatedDescription,
+		updatedPrice,
+		productId
+	);
+	updatedProduct.save();
+	res.redirect("/admin/products");
+}
