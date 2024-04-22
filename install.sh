@@ -11,3 +11,6 @@ npm install --save ejs pug
 
 # Install version 3 due to a breaking change
 npm install --save express-handlebars@3.0
+
+# Install mysql2
+npm install --save mysql2

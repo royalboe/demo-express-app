@@ -17,19 +17,19 @@ exports.postProducts = (req, res, next) => {
 
 	const product = new Product(null, title, imageURL, description, price);
 	product.save();
-	res.redirect("/");
+	res.redirect("/admin/products");
 };
 
 // To edit a single product
 exports.editProduct = (req, res, next) => {
 	const editMode = req.query.edit
 	if (!editMode) {
-		return res.redirect("/")
+		return res.redirect("/admin/products");
 	}
 	const productId = req.params.productId;
 	Product.findById(productId, (product) => {
 		if (!product) {
-			return res.redirect("/");
+			return res.redirect("/admin/products");
 		}
 		res.render("admin/edit-product", {
 			docTitle: "Edit Product",
