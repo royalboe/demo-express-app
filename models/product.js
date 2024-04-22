@@ -31,5 +31,7 @@ module.exports = class Product {
 	}
 
 	// Static method to find product by id
-	static findById(id, cb) {}
+	static findById(id) {
+		return db.execute('SELECT * FROM products WHERE products.id = ?', [id]);
+	}
 };
