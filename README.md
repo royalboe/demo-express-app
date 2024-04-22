@@ -1,4 +1,8 @@
-# Demo Project
+# Demo Node Project
+
+## Description
+
+Learning how to create a nodejs full stack application
 
 ## How to run
 
