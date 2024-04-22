@@ -16,8 +16,12 @@ exports.postProducts = (req, res, next) => {
 	const description = req.body.description;
 
 	const product = new Product(null, title, imageURL, description, price);
-	product.save();
-	res.redirect("/admin/products");
+	product
+		.save()
+		.then(() => {
+			res.redirect('/')
+		})
+		.catch(err => console.log(err));
 };
 
 // To edit a single product

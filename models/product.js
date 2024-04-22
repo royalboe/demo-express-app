@@ -15,7 +15,12 @@ module.exports = class Product {
   }
 
 	// Method to save the product
-	save() { }
+	save() { 
+		return db.execute(
+			'INSERT INTO products (title, price, imageURL, description) VALUES (?, ?, ?, ?)',
+			[this.title, this.price, this.imageURL, this.description]
+		);
+	}
 
 	// Static method to delete product by id
 	static deleteById(id) {
