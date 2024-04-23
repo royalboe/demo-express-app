@@ -14,3 +14,6 @@ npm install --save express-handlebars@3.0
 
 # Install mysql2
 npm install --save mysql2
+
+# Install sequelize
+npm install --save sequelize
