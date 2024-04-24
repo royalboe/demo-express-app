@@ -3,12 +3,14 @@
 
     <body>
         <%- include('../includes/navigation.ejs') %>
-        <main class="centred">
+        <main class="centered">
             <h2>
                 <%= product.title %>
             </h2>
             <hr>
-            <img src="<%= product.imageURL %>" alt="<%= product.title %>">
+            <div class="image">
+                <img src="<%= product.imageURL %>" alt="<%= product.title %>">
+            </div>
             <hr>
             <h2>
                 $<%= product.price %>
