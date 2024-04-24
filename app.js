@@ -5,6 +5,7 @@ const path = require('path');
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const errorController = require('./controllers/404')
+const sequelize = require('./util/database');
 
 // const expressHbs = require("express-handlebars");
 
@@ -39,4 +40,9 @@ app.use(shopRoutes);
 
 app.use(errorController.error);
 
-app.listen(3000);
+sequelize.sync()
+  .then(result => {
+    console.log(`DB created`);
+		app.listen(3000);
+	})
+	.catch(err => console.log(err));

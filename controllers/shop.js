@@ -3,16 +3,15 @@ const Cart = require("../models/cart");
 
 // Renders view-products view
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll()
-		.then(([rows, FieldData]) => {
-			res.render("shop/view-products", {
-				prods: rows,
-				docTitle: "All Products",
-				path: "/products",
-				hasProducts: rows.length > 0,
-			});
-		})
-		.catch((err) => console.log(err));
+  Product.findAll()
+    .then((products) => {
+      res.render("shop/view-products", {
+        prods: products,
+        docTitle: "All Products",
+        path: "/products",
+        hasProducts: products.length > 0,
+    });
+  }).catch((err) => console.log(err));
 };
 
 // Renders product-details view
@@ -31,16 +30,17 @@ exports.getProductDetails = (req, res, next) => {
 
 // Renders index view for home
 exports.getIndex = (req, res, next) => {
-  Product.fetchAll()
-		.then(([rows, FieldData]) => {
-			res.render("shop/view-products", {
-				prods: rows,
-				docTitle: "All Products",
-				path: "/",
-				hasProducts: rows.length > 0,
-			});
-		})
-		.catch((err) => console.log(err));
+  // Fetches all products from the database
+  Product.findAll()
+    .then(products => {
+      res.render("shop/index", {
+        prods: products,
+        docTitle: "Shop",
+        path: "/",
+        hasProducts: products.length > 0,
+      });
+    })
+    .catch((err) => console.log(err));
 };
 
 // Renders cart view

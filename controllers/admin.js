@@ -15,11 +15,15 @@ exports.postProducts = (req, res, next) => {
 	const price = req.body.price;
 	const description = req.body.description;
 
-	const product = new Product(null, title, imageURL, description, price);
-	product
-		.save()
-		.then(() => {
-			res.redirect('/')
+	Product.create({
+		title: title,
+		imageURL: imageURL,
+		price: price,
+		description: description
+	})
+		.then((result) => {
+			console.log("Product created");
+			console.log(result)
 		})
 		.catch(err => console.log(err));
 };
@@ -46,14 +50,14 @@ exports.editProduct = (req, res, next) => {
 
 // Controller to render the admin product page
 exports.getProducts = (req, res, next) => {
-	Product.fetchAll((products) => {
+	Product.findAll().then((products) => {
 		res.render("admin/products", {
 			prods: products,
 			docTitle: "Admin Products",
 			path: "/admin/products",
 			hasProducts: products.length > 0,
 		});
-	});
+	}).catch(err => console.log(err));
 };
 
 
