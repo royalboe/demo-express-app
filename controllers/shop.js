@@ -17,16 +17,24 @@ exports.getProducts = (req, res, next) => {
 // Renders product-details view
 exports.getProductDetails = (req, res, next) => {
   const prodId = req.params.productId;
-  // console.log(prodId);
-  Product.findById(prodId)
-    .then(([product]) => {
+  Product.findByPk(prodId)
+    .then(product => {
       res.render("shop/product-details", {
-        product: product[0],
+        product: product,
         docTitle: product.title,
         path: "/products",
       });
-    });  
-  }
+  })
+    .catch(err => console.log(err));
+  // Product.findAll({where: {id: prodId}})
+  //   .then((product) => {
+  //     res.render("shop/product-details", {
+  //       product: product[0],
+  //       docTitle: product[0].title,
+  //       path: "/products",
+  //     });
+  //   }).catch(err => console.log(err));  
+}
 
 // Renders index view for home
 exports.getIndex = (req, res, next) => {
