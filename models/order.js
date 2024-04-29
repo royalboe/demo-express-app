@@ -9,3 +9,5 @@ const Order = sequelize.define('order', {
     primaryKey: true
   }
 });
+
+module.exports = Order;
