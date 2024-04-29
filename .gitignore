@@ -4,3 +4,5 @@ node_modules/*
 .vscode
 data
 util/database.js
+.env
+.mysql.env
