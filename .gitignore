@@ -3,6 +3,6 @@ node_modules/*
 .git
 .vscode
 data
-util/database.js
+# util/database.js
 .env
 .mysql.env
