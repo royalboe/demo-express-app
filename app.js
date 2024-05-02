@@ -41,12 +41,12 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 // This is to register the user
 app.use((req, res, next) => {
-	User.findByPk(1)
-		.then(user => {
-			req.user = user;
-			next();
-		})
-		.catch(err => console.log(err));
+	// User.findByPk(1)
+	// 	.then(user => {
+	// 		req.user = user;
+	// 		next();
+	// 	})
+	// 	.catch(err => console.log(err));
 });
 
 app.use('/admin', adminRoutes);
@@ -55,33 +55,3 @@ app.use(shopRoutes);
 
 app.use(errorController.error);
 
-Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
-User.hasMany(Product);
-User.hasOne(Cart);
-Cart.belongsTo(User);
-Cart.belongsToMany(Product, { through: CartItem });
-Product.belongsToMany(Cart, { through: CartItem });
-Order.belongsTo(User);
-User.hasMany(Order);
-Order.belongsToMany(Product, { through: OrderItem });
-
-
-sequelize
-	// .sync({ force: true })
-	.sync()
-	.then(() => {
-		return User.findByPk(1);
-	})
-	.then(user => {
-		if (!user) {
-			return User.create({ name: 'Max', email: 'test@test.com' });
-		}
-		return user;
-	})
-	.then(user => {
-		return user.createCart();
-	})
-	.then(() => {
-		app.listen(3000);
-	})
-	.catch(err => console.log(err));
