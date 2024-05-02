@@ -2,17 +2,18 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 
-const adminRoutes = require('./routes/admin');
-const shopRoutes = require('./routes/shop');
-const errorController = require('./controllers/404')
-const sequelize = require('./util/database');
-const User = require('./models/users');
-const Product = require('./models/product');
-const Cart = require('./models/cart');
-const CartItem = require('./models/cart-item');
-const Order = require('./models/order');
-const OrderItem = require('./models/order-item');
+// const adminRoutes = require('./routes/admin');
+// const shopRoutes = require('./routes/shop');
+// const errorController = require('./controllers/404')
+// const sequelize = require('./util/database');
+// const User = require('./models/users');
+// const Product = require('./models/product');
+// const Cart = require('./models/cart');
+// const CartItem = require('./models/cart-item');
+// const Order = require('./models/order');
+// const OrderItem = require('./models/order-item');
 // const expressHbs = require("express-handlebars");
+const mongoConnect = require('./util/database').mongoConnect;
 
 const app = express();
 
@@ -49,9 +50,13 @@ app.use((req, res, next) => {
 	// 	.catch(err => console.log(err));
 });
 
-app.use('/admin', adminRoutes);
+// app.use('/admin', adminRoutes);
 
-app.use(shopRoutes);
+// app.use(shopRoutes);
 
-app.use(errorController.error);
+// app.use(errorController.error);
 
+mongoConnect(() => {
+	console.log('Connected to MongoDB');
+	app.listen(3000);
+});
