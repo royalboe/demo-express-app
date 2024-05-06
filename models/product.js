@@ -1,4 +1,4 @@
-const mongodb = require("mongodb");
+const {ObjectId} = require("mongodb");
 const getDb = require("../util/database").getDb;
 
 class Product {
@@ -33,10 +33,10 @@ class Product {
 	}
 
 	static findByPk(prodId) {
-		const db = getDb();
+    const db = getDb();
 		return db
 			.collection("products")
-			.find({ _id: new mongodb.ObjectId(prodId) })
+			.find({ _id: new ObjectId.createFromHexString(prodId) })
 			.next()
 			.then((product) => {
 				console.log(product);
