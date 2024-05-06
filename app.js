@@ -2,9 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 
-// const adminRoutes = require('./routes/admin');
-// const shopRoutes = require('./routes/shop');
-// const errorController = require('./controllers/404')
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
+const errorController = require('./controllers/404')
 // const sequelize = require('./util/database');
 // const User = require('./models/users');
 // const Product = require('./models/product');
@@ -41,20 +41,20 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({extended: false}));
 
 // This is to register the user
-app.use((req, res, next) => {
-	// User.findByPk(1)
-	// 	.then(user => {
-	// 		req.user = user;
-	// 		next();
-	// 	})
-	// 	.catch(err => console.log(err));
-});
+// app.use((req, res, next) => {
+// 	// User.findByPk(1)
+// 	// 	.then(user => {
+// 	// 		req.user = user;
+// 	// 		next();
+// 	// 	})
+// 	// 	.catch(err => console.log(err));
+// });
 
-// app.use('/admin', adminRoutes);
+app.use('/admin', adminRoutes);
 
-// app.use(shopRoutes);
+app.use(shopRoutes);
 
-// app.use(errorController.error);
+app.use(errorController.error);
 
 mongoConnect(() => {
 	console.log('Connected to MongoDB');

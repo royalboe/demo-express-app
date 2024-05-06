@@ -18,32 +18,32 @@ router.get('/product/:productId', shopController.getProductDetails);
 
 // Router for the orders path
 // /orders => GET Method
-router.get('/orders', shopController.getOrders);
+// router.get('/orders', shopController.getOrders);
 
 // Router for the checkout path
 // /checkout => GET Method
-router.get('/checkout', shopController.getCheckout);
+// router.get('/checkout', shopController.getCheckout);
 
 // Router for the cart path
 // /cart => GET Method
-router.get('/cart', shopController.getCart);
+// router.get('/cart', shopController.getCart);
 
 // Router for the add-to-cart path
 // /cart => POST Method
-router.post('/cart', shopController.postCart);
+// router.post('/cart', shopController.postCart);
 
 // Router for the delete-from-cart path
 // /delete-from-cart => POST Method
-router.post('/cart-delete-item', shopController.postCartDeleteProduct);
+// router.post('/cart-delete-item', shopController.postCartDeleteProduct);
 
 // Router for the orders path
 // /orders => GET Method
-router.get('/orders', shopController.getOrders);
+// router.get('/orders', shopController.getOrders);
 
 
 // Router for the create-order path
 // /create-order => POST Method
-router.post('/create-order', shopController.postOrder);
+// router.post('/create-order', shopController.postOrder);
 
 // // Router for the reset-cart path
 // // /reset-cart => POST Method
