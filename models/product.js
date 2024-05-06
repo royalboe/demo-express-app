@@ -7,14 +7,21 @@ class Product {
 		this.price = price;
 		this.imageURL = imageURL;
 		this.description = description;
-		this._id = id
+		this._id = ObjectId.createFromHexString(id)
 	}
 
 	save() {
-		const db = getDb();
-		return db
-			.collection("products")
-			.insertOne(this)
+    const db = getDb();
+    let dbOp;
+    if (this._id) {
+      //Update product
+      dbOp = db
+        .collection("products")
+        .updateOne({ _id: this._id }, { $set: this });
+    } else {
+      dbOp = db.collection("products").insertOne(this);
+    }
+		return dbOp
 			.then(() => console.log("Insert successful"))
 			.catch((err) => console.log(err));
 	}
@@ -36,7 +43,7 @@ class Product {
     const db = getDb();
 		return db
 			.collection("products")
-			.find({ _id: new ObjectId.createFromHexString(prodId) })
+			.find({ _id: ObjectId.createFromHexString(prodId) })
 			.next()
 			.then((product) => {
 				console.log(product);
