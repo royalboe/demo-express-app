@@ -1,0 +1,37 @@
+[
+	{
+		"id": "123245",
+		"title": "A Book",
+		"imageURL": "https://www.publicdomainpictures.net/pictures/10000/velka/1-1210009435EGmE.jpg",
+		"description": "This is an awesome book!",
+		"price": "19"
+	},
+	{
+		"id": "0.558673316244021",
+		"title": "Another Product",
+		"imageURL": "https://www.publicdomainpictures.net/pictures/570000/velka/es-war-einmal.jpg",
+		"description": "  Another very amazing product! I assure you, it is a great product ",
+		"price": "35.50"
+	},
+	{
+		"id": "0.7851635431201458",
+		"title": "New Book",
+		"imageURL": "https://www.publicdomainpictures.net/pictures/570000/velka/es-war-einmal-1704484805jkv.jpg",
+		"description": "This is a book on the termination of books, sharp.!!!",
+		"price": "45.78"
+	},
+	{
+		"id": "0.5251910744159147",
+		"title": "neww",
+		"imageURL": "https://www.publicdomainpictures.net/pictures/130000/velka/stack-of-books.jpg",
+		"description": "hdfhbhuvbuf\r\n",
+		"price": "47"
+	},
+	{
+		"id": "0.5251910744159147",
+		"title": "neww",
+		"imageURL": "https://www.publicdomainpictures.net/pictures/170000/velka/judge-gavel-1461291328XaU.jpg",
+		"description": "hdfhbhuvbuf\r\n",
+		"price": "47"
+	}
+]

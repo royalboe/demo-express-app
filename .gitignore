@@ -2,7 +2,7 @@ node_modules
 node_modules/*
 .git
 .vscode
-data
+#data
 # util/database.js
 .env
 .mysql.env
