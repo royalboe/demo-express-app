@@ -44,7 +44,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use((req, res, next) => {
 	User.findById('6639f1a1444e40c0695c0df7')
 		.then(user => {
-			req.user = user;
+			req.user = new User(user.name, user.email, user.cart, user._id);
 			next();
 		})
 		.catch(err => console.log(err));
