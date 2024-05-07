@@ -1,4 +1,5 @@
 const Product = require("../models/product");
+const User = require('../models/users')
 const { ObjectId } = require("mongodb");
 
 // Renders the add product view to give product details
@@ -15,9 +16,10 @@ exports.postProducts = (req, res, next) => {
 	const imageURL = req.body.imageURL;
 	const price = req.body.price;
 	const description = req.body.description;
+	const userId = req.user._id
 
 	// Create a product to save
-	const product = new Product(title, price, imageURL, description);
+	const product = new Product(title, price, imageURL, description, userId);
 	product
 		.save()
 		.then(() => res.redirect("/admin/products"))
@@ -74,11 +76,13 @@ exports.postEditProduct = (req, res, next) => {
 	const updatedImageURL = req.body.imageURL;
 	const updatedPrice = req.body.price;
 	const updatedDescription = req.body.description;
+	const userId = req.user._id
 	const product = new Product(
 		updatedTitle,
 		updatedPrice,
 		updatedImageURL,
 		updatedDescription,
+		userId,
 		productId
 	);
 	product
@@ -90,15 +94,25 @@ exports.postEditProduct = (req, res, next) => {
 		.catch((err) => console.log(err));
 };
 
-// exports.deleteProduct = (req, res, next) => {
-// 	const productId = req.body.productId;
-// 	Product.findByPk(productId)
-// 		.then(product => {
-// 			product.destroy();
-// 		})
-// 		.then(() => {
-// 			res.redirect("/admin/products");
-// 			console.log("Product deleted");
-// 		})
-// 		.catch(err => console.log(err));	
-// }
+exports.deleteProduct = (req, res, next) => {
+	const productId = req.body.productId;
+	Product.deleteById(productId)
+		.then(() => {
+			res.redirect("/admin/products");
+			console.log("Product deleted");
+		})
+		.catch(err => console.log(err));	
+}
+
+exports.addUser = (req, res, next) => {
+	const email = req.body.email;
+	const username = req.body.username;
+	console.log(email, username);
+	const user = new User(username, email);
+	user.save().then(() => {
+		res.redirect("/admin/products");
+		console.log('Inserted user');
+	}
+	).catch(err => console.log(err));
+
+}

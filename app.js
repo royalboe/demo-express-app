@@ -6,7 +6,7 @@ const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const errorController = require('./controllers/404')
 // const sequelize = require('./util/database');
-// const User = require('./models/users');
+const User = require('./models/users');
 // const Product = require('./models/product');
 // const Cart = require('./models/cart');
 // const CartItem = require('./models/cart-item');
@@ -41,14 +41,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({extended: false}));
 
 // This is to register the user
-// app.use((req, res, next) => {
-// 	// User.findByPk(1)
-// 	// 	.then(user => {
-// 	// 		req.user = user;
-// 	// 		next();
-// 	// 	})
-// 	// 	.catch(err => console.log(err));
-// });
+app.use((req, res, next) => {
+	User.findById('6639f1a1444e40c0695c0df7')
+		.then(user => {
+			req.user = user;
+			next();
+		})
+		.catch(err => console.log(err));
+});
 
 app.use('/admin', adminRoutes);
 
