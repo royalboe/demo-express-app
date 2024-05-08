@@ -34,7 +34,7 @@ router.post('/cart', shopController.postCart);
 
 // Router for the delete-from-cart path
 // /delete-from-cart => POST Method
-// router.post('/cart-delete-item', shopController.postCartDeleteProduct);
+router.post('/cart-delete-item', shopController.postCartDeleteProduct);
 
 // Router for the orders path
 // /orders => GET Method
