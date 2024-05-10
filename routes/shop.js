@@ -38,12 +38,12 @@ router.post('/cart-delete-item', shopController.postCartDeleteProduct);
 
 // Router for the orders path
 // /orders => GET Method
-// router.get('/orders', shopController.getOrders);
+router.get('/orders', shopController.getOrders);
 
 
 // Router for the create-order path
 // /create-order => POST Method
-// router.post('/create-order', shopController.postOrder);
+router.post('/create-order', shopController.postOrder);
 
 // // Router for the reset-cart path
 // // /reset-cart => POST Method
