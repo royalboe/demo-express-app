@@ -20,7 +20,9 @@ const productObj = {
 	},
 }
 
-const productData = new Schema(productObj);
+const productSchema = new Schema(productObj);
+
+module.exports = mongoose.model("Product", productSchema);
 
 // const {ObjectId} = require("mongodb");
 // const getDb = require("../util/database").getDb;

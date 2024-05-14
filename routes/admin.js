@@ -1,17 +1,17 @@
-// const express = require('express');
+const express = require('express');
 
-// const adminController = require('../controllers/admin');
+const adminController = require('../controllers/admin');
 
-// const router = express.Router();
+const router = express.Router();
 
 // // /admin/add-product => GET Method
-// router.get('/add-product', adminController.addProducts);
+router.get('/add-product', adminController.addProducts);
 
 // // /admin/products => GET Method
 // router.get('/products', adminController.getProducts);
 
 // // /admin/add-product => POST Method
-// router.post('/add-product', adminController.postProducts);
+router.post('/add-product', adminController.postProducts);
 
 // // // /admin/edit-product/:productId => GET Method
 // router.get('/edit-product/:productId', adminController.editProduct);
@@ -24,4 +24,4 @@
 
 // router.post('/add-user', adminController.addUser);
 
-// module.exports = router;
+module.exports = router;

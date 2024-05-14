@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const path = require('path');
 
-// const adminRoutes = require('./routes/admin');
+const adminRoutes = require('./routes/admin');
 // const shopRoutes = require('./routes/shop');
 const errorController = require('./controllers/404')
 // const User = require('./models/users');
@@ -45,7 +45,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 // 		.catch(err => console.log(err));
 // });
 
-// app.use('/admin', adminRoutes);
+app.use('/admin', adminRoutes);
 
 // app.use(shopRoutes);
 
