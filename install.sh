@@ -17,3 +17,6 @@ npm install --save mysql2
 
 # Install sequelize
 npm install --save sequelize
+
+# Install mongoose
+npm install mongoose --save

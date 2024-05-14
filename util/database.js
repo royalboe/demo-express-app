@@ -1,10 +1,13 @@
 const mongodb = require('mongodb');
 const MongoClient = mongodb.MongoClient;
 
+exports.uri =
+	"mongodb+srv://demo-user:QBsj3cAEz3AC7lze@royalboe.bkop7jb.mongodb.net/shopdb?retryWrites=true&w=majority&appName=Royalboe";
+
 let _db;
 const mongoConnect = (callback) => {
 	MongoClient.connect(
-		"mongodb+srv://demo-user:QBsj3cAEz3AC7lze@royalboe.bkop7jb.mongodb.net/shop?retryWrites=true&w=majority&appName=Royalboe"
+		uri
 	)
 		.then((client) => {
             console.log('Connected!');
