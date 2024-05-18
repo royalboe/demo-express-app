@@ -3,7 +3,9 @@ const Product = require("../models/product");
 
 // Renders view-products view
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll()
+  Product
+    .find()
+    // .fetchAll()
     .then((products) => {
       res.render("shop/view-products", {
         prods: products,
@@ -17,7 +19,8 @@ exports.getProducts = (req, res, next) => {
 // Renders product-details view
 exports.getProductDetails = (req, res, next) => {
   const prodId = req.params.productId;
-  Product.findByPk(prodId)
+  // Using the builtin findById mongoose method
+  Product.findById(prodId)
     .then(product => {
       res.render("shop/product-details", {
         product: product,
@@ -25,21 +28,15 @@ exports.getProductDetails = (req, res, next) => {
         path: "/products",
       });
   })
-    .catch(err => console.log(err));
-//   Product.findAll({where: {id: prodId}})
-//     .then((product) => {
-//       res.render("shop/product-details", {
-//         product: product[0],
-//         docTitle: product[0].title,
-//         path: "/products",
-//       });
-//     }).catch(err => console.log(err));  
+    .catch(err => console.log(err)); 
 }
 
 // Renders index view for home
 exports.getIndex = (req, res, next) => {
   // Fetches all products from the database
-  Product.fetchAll()
+  Product
+    .find()
+    // .fetchAll()
     .then(products => {
       res.render("shop/index", {
         prods: products,
