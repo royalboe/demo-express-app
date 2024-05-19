@@ -1,5 +1,5 @@
 const Product = require("../models/product");
-// const Cart = require("../models/cart");
+const Order = require("../models/orders");
 
 // Renders view-products view
 exports.getProducts = (req, res, next) => {
@@ -90,11 +90,12 @@ exports.postCartDeleteProduct = (req, res, next) => {
 // Post Orders
 exports.postOrder = (req, res, next) => {
   req.user
-    .addOrder()
-    .then((result) => {
-      res.redirect("/orders");
-    })
-    .catch((err) => console.log(err));
+		.populate("cart.items.productId")
+    .then((user) => {
+      const products = user.cart.items;
+			res.redirect("/orders");
+		})
+		.catch((err) => console.log(err));
 }
 
 // Renders Order View

@@ -36,17 +36,17 @@ router.post('/cart', shopController.postCart);
 // /delete-from-cart => POST Method
 router.post('/cart-delete-item', shopController.postCartDeleteProduct);
 
-// // Router for the orders path
-// // /orders => GET Method
-// router.get('/orders', shopController.getOrders);
+// Router for the orders path
+// /orders => GET Method
+router.get('/orders', shopController.getOrders);
 
 
-// // Router for the create-order path
-// // /create-order => POST Method
-// router.post('/create-order', shopController.postOrder);
+// Router for the create-order path
+// /create-order => POST Method
+router.post('/create-order', shopController.postOrder);
 
-// // // Router for the reset-cart path
-// // // /reset-cart => POST Method
-// // router.post('/reset-cart', shopController.postResetCart);
+// // Router for the reset-cart path
+// // /reset-cart => POST Method
+// router.post('/reset-cart', shopController.postResetCart);
 
 module.exports = router;

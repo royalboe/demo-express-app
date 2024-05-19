@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const OrderSchema = new Schema({
+const orderSchema = new Schema({
 	user: {
 		type: Schema.Types.ObjectId,
 		ref: "users",
@@ -16,6 +16,8 @@ const OrderSchema = new Schema({
 		},
 	],
 });
+
+module.exports = mongoose.model('Orders', orderSchema);
 
 // 	addOrder() {
 // 		const db = getDb();
