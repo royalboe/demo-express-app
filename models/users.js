@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
+const Product = require('./product');
+
 const userSchema = new Schema({
 	username: {
 		type: String,
@@ -32,6 +34,7 @@ const userSchema = new Schema({
 });
 
 userSchema.methods.addToCart = addToCart;
+userSchema.methods.deleteFromCart = deleteFromCart;
 
 module.exports = mongoose.model('User', userSchema);
 
@@ -77,38 +80,18 @@ function addToCart(product) {
 		};
 		this.cart = updatedCart;
 		this.save();
-	}
+};
 
-// 	deleteFromCart(productId) {
-// 		const updatedCart = this.cart.items.filter((item) => {
-// 			return item.productId.toString() !== productId.toString();
-// 		});
-// 		const db = getDb();
-// 		return db
-// 			.collection("users")
-// 			.updateOne({ _id: this._id }, { $set: { cart: { items: updatedCart } } });
-// 	}
+function deleteFromCart(productId) {
+  console.log(this.cart)
+  const updatedCart = this.cart.items.filter((item) => {
+    return item.productId.toString() !== productId.toString();
+  });
+  console.log(updatedCart);
+  this.cart.items = updatedCart;
+  return this.save();
+};
 
-// 	getCart() {
-// 		const db = getDb();
-// 		const productIds = this.cart.items.map((i) => {
-// 			return i.productId;
-// 		});
-// 		return db
-// 			.collection("products")
-// 			.find({ _id: { $in: productIds } })
-// 			.toArray()
-// 			.then((products) => {
-// 				return products.map((p) => {
-// 					return {
-// 						...p,
-// 						quantity: this.cart.items.find((i) => {
-// 							return i.productId.toString() === p._id.toString();
-// 						}).quantity,
-// 					};
-// 				});
-// 			});
-// 	}
 
 // 	addOrder() {
 // 		const db = getDb();

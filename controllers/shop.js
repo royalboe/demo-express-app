@@ -51,8 +51,9 @@ exports.getIndex = (req, res, next) => {
 // Renders cart view
 exports.getCart = (req, res, next) => {
 	req.user
-		.getCart()
-		.then((products) => {
+    .populate("cart.items.productId")
+    .then((user) => {
+      const products = user.cart.items;
 			res.render("shop/cart", {
 				path: "/cart",
 				docTitle: "Your Cart",
@@ -70,8 +71,7 @@ exports.postCart = (req, res, next) => {
 		.then((product) => {
 			return req.user.addToCart(product);
 		})
-		.then((result) => {
-			console.log(result);
+		.then(() => {
 			res.redirect("/cart");
 		});
 };
@@ -81,7 +81,7 @@ exports.postCartDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
   req.user
     .deleteFromCart(prodId)
-		.then((result) => {
+		.then(() => {
 			res.redirect("/cart");
 		})
 		.catch((err) => console.log(err));

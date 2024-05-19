@@ -24,17 +24,17 @@ router.get('/product/:productId', shopController.getProductDetails);
 // // /checkout => GET Method
 // // router.get('/checkout', shopController.getCheckout);
 
-// // Router for the cart path
-// // /cart => GET Method
-// router.get('/cart', shopController.getCart);
+// Router for the cart path
+// /cart => GET Method
+router.get('/cart', shopController.getCart);
 
 // Router for the add-to-cart path
 // /cart => POST Method
 router.post('/cart', shopController.postCart);
 
-// // Router for the delete-from-cart path
-// // /delete-from-cart => POST Method
-// router.post('/cart-delete-item', shopController.postCartDeleteProduct);
+// Router for the delete-from-cart path
+// /delete-from-cart => POST Method
+router.post('/cart-delete-item', shopController.postCartDeleteProduct);
 
 // // Router for the orders path
 // // /orders => GET Method
