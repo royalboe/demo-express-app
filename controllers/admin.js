@@ -1,6 +1,6 @@
 const Product = require("../models/product");
 const mongoose = require('mongoose');
-// const User = require('../models/users');
+const User = require('../models/users');
 const { ObjectId } = require("mongodb");
 
 // Renders the add product view to give product details
@@ -17,11 +17,11 @@ exports.postProducts = (req, res, next) => {
 	const imageURL = req.body.imageURL;
 	const price = req.body.price;
 	const description = req.body.description;
-	// const userId = req.user._id
+	const userId = req.user._id
 
 
 	// Create a product to save
-	const product = new Product({title: title, price, imageURL, description});
+	const product = new Product({title: title, price, imageURL, description, userId});
 	product
 		.save()
 		.then(() => console.log('Inserted'))
@@ -110,7 +110,12 @@ exports.addUser = (req, res, next) => {
 	const email = req.body.email;
 	const username = req.body.username;
 	console.log(email, username);
-	const user = new User(username, email);
+	const user = new User({
+		username,
+		email,
+		cart: { items: [] },
+		created: new Date(),
+	});
 	user.save().then(() => {
 		res.redirect("/admin/products");
 		console.log('Inserted user');

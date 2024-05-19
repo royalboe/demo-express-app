@@ -18,6 +18,11 @@ const productObj = {
 		type: String,
 		required: true
 	},
+	userId: {
+		type: Schema.Types.ObjectId,
+		ref: 'User',
+		required: true
+	}
 }
 
 const productSchema = new Schema(productObj);
