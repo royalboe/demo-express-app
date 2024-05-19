@@ -28,9 +28,9 @@ router.get('/product/:productId', shopController.getProductDetails);
 // // /cart => GET Method
 // router.get('/cart', shopController.getCart);
 
-// // Router for the add-to-cart path
-// // /cart => POST Method
-// router.post('/cart', shopController.postCart);
+// Router for the add-to-cart path
+// /cart => POST Method
+router.post('/cart', shopController.postCart);
 
 // // Router for the delete-from-cart path
 // // /delete-from-cart => POST Method

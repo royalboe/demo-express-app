@@ -66,7 +66,7 @@ exports.getCart = (req, res, next) => {
 // Controller to post items to the cart
 exports.postCart = (req, res, next) => {
 	const prodId = req.body.productId;
-	Product.findByPk(prodId)
+	Product.findById(prodId)
 		.then((product) => {
 			return req.user.addToCart(product);
 		})

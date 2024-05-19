@@ -27,19 +27,6 @@ exports.postProducts = (req, res, next) => {
 		.then(() => console.log('Inserted'))
 		.then(() => res.redirect("/admin/products"))
 		.catch((err) => console.log(err));
-
-	// // Create a product object and save it to the database using the userId
-	// req.user.createProduct({
-	// 	title: title,
-	// 	imageURL: imageURL,
-	// 	price: price,
-	// 	description: description,
-	// })
-	// //Product.create({ title: title, imageURL: imageURL, price: price, description: description, userId: req.user.id })
-	// 	.then(() => {
-	// 		res.redirect("/admin/products");
-	// 	})
-	// 	.catch(err => console.log(err));
 };
 
 // To edit a single product
@@ -62,8 +49,13 @@ exports.editProduct = (req, res, next) => {
 // Controller to render the admin product page
 exports.getProducts = (req, res, next) => {
 	Product
-		.find()
+	.find()
+	// This will return all products and select fields to be returned
+	.select("title price -_id imageURL description")
+	// This will populate the userId field with the username field
+	.populate("userId", "username")
 		.then((products) => {
+			console.log(products);
 			res.render("admin/products", {
 				prods: products,
 				docTitle: "Admin Products",

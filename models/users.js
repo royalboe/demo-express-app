@@ -31,6 +31,8 @@ const userSchema = new Schema({
 	timestamps: true,
 });
 
+userSchema.methods.addToCart = addToCart;
+
 module.exports = mongoose.model('User', userSchema);
 
 // const { ObjectId } = require("mongodb");
@@ -54,43 +56,28 @@ module.exports = mongoose.model('User', userSchema);
 // 			.catch((err) => console.log(err));
 // 	}
 
-// 	addToCart(product) {
-// 		// const updatedCart = {
-// 		//     productId: product._id,
-// 		//     quantity: 1
-// 		// }
-// 		// const db = getDb();
-// 		// return db.collection("users").updateOne(
-// 		// 			{
-// 		// 				_id: this._id,
-// 		// 			},
-// 		// 			{ $set: { cart: { items: [updatedCart] } } }
-// 		// 		);
+function addToCart(product) {
+		const cartProductIndex = this.cart.items.findIndex((cp) => {
+			return cp.productId.toString() === product._id.toString();
+		});
+		let newQuantity = 1;
+		const updatedCartItems = [...this.cart.items];
 
-// 		const cartProductIndex = this.cart.items.findIndex((cp) => {
-// 			return cp.productId.toString() === product._id.toString();
-// 		});
-// 		let newQuantity = 1;
-// 		const updatedCartItems = [...this.cart.items];
-
-// 		if (cartProductIndex >= 0) {
-// 			newQuantity = this.cart.items[cartProductIndex].quantity + 1;
-// 			updatedCartItems[cartProductIndex].quantity = newQuantity;
-// 		} else {
-// 			updatedCartItems.push({
-// 				productId: product._id,
-// 				quantity: newQuantity,
-// 			});
-// 		}
-
-// 		const updatedCart = {
-// 			items: updatedCartItems,
-// 		};
-// 		const db = getDb();
-// 		return db
-// 			.collection("users")
-// 			.updateOne({ _id: this._id }, { $set: { cart: updatedCart } });
-// 	}
+		if (cartProductIndex >= 0) {
+			newQuantity = this.cart.items[cartProductIndex].quantity + 1;
+			updatedCartItems[cartProductIndex].quantity = newQuantity;
+		} else {
+			updatedCartItems.push({
+				productId: product._id,
+				quantity: newQuantity,
+			});
+		}
+		const updatedCart = {
+			items: updatedCartItems,
+		};
+		this.cart = updatedCart;
+		this.save();
+	}
 
 // 	deleteFromCart(productId) {
 // 		const updatedCart = this.cart.items.filter((item) => {
