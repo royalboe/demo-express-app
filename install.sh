@@ -23,3 +23,6 @@ npm install mongoose --save
 
 # Install express session
 npm install --save express-session
+
+# Install mogodb session
+npm install --save connect-mongodb-session

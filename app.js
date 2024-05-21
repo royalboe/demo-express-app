@@ -1,5 +1,6 @@
 const express = require('express');
 const session = require("express-session");
+const MongoDbStore = require('connect-mongodb-session')(session);
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const path = require("path");
@@ -10,7 +11,7 @@ const authRoutes = require("./routes/auth");
 const errorController = require("./controllers/404");
 const User = require("./models/users");
 
-const uri = require("./util/database").uri;
+const MONGODB_URI = require("./util/database").MONGODB_URI;
 
 const app = express();
 
@@ -37,12 +38,18 @@ app.use(express.static(path.join(__dirname, "public")));
 // This allows you to access form data submitted in POST requests via req.body in your route handlers
 app.use(bodyParser.urlencoded({ extended: false }));
 
+// Store session in database
+const store = new MongoDbStore({
+	uri: MONGODB_URI,
+	collection: 'sessions'
+})
 // This is the middleware for the express-session
 app.use(
 	session({
 		secret: "My Secret Name Shop App",
 		resave: false,
 		saveUninitialized: false,
+		store:store
 	})
 );
 
@@ -65,7 +72,7 @@ app.use(authRoutes);
 app.use(errorController.error);
 
 mongoose
-	.connect(uri)
+	.connect(MONGODB_URI)
 	.then(() => {
 		User.findOne().then(user => {
 			if (!user) {
