@@ -8,11 +8,12 @@ exports.getProducts = (req, res, next) => {
     // .fetchAll()
     .then((products) => {
       res.render("shop/view-products", {
-        prods: products,
-        docTitle: "All Products",
-        path: "/products",
-        hasProducts: products.length > 0,
-    });
+				prods: products,
+				docTitle: "All Products",
+				path: "/products",
+				hasProducts: products.length > 0,
+				isAuthenticated: req.isLoggedIn
+			});
   }).catch((err) => console.log(err));
 };
 
@@ -23,10 +24,11 @@ exports.getProductDetails = (req, res, next) => {
   Product.findById(prodId)
     .then(product => {
       res.render("shop/product-details", {
-        product: product,
-        docTitle: product.title,
-        path: "/products",
-      });
+				product: product,
+				docTitle: product.title,
+				path: "/products",
+				isAuthenticated: req.isLoggedIn
+			});
   })
     .catch(err => console.log(err)); 
 }
@@ -39,11 +41,12 @@ exports.getIndex = (req, res, next) => {
     // .fetchAll()
     .then(products => {
       res.render("shop/index", {
-        prods: products,
-        docTitle: "Shop",
-        path: "/",
-        hasProducts: products.length > 0,
-      });
+				prods: products,
+				docTitle: "Shop",
+				path: "/",
+				hasProducts: products.length > 0,
+				isAuthenticated: req.isLoggedIn
+			});
     })
     .catch((err) => console.log(err));
 };
@@ -59,6 +62,7 @@ exports.getCart = (req, res, next) => {
 				docTitle: "Your Cart",
 				hasProducts: products.length > 0,
 				products: products,
+				isAuthenticated: req.isLoggedIn
 			});
 		})
 		.catch((err) => console.log(err));
@@ -118,10 +122,11 @@ exports.postOrder = (req, res, next) => {
 exports.getOrders = (req, res, next) => {
 	Order.find({'user.userId' : req.user._id})
 		.then(orders => {
-			res.render('shop/orders', {
-				path: '/orders',
-				docTitle: 'Your Orders',
-        orders: orders
+			res.render("shop/orders", {
+				path: "/orders",
+				docTitle: "Your Orders",
+				orders: orders,
+				isAuthenticated: req.isLoggedIn
 			});
 		})
 		.catch(err => console.log(err));
