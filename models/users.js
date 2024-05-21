@@ -33,29 +33,10 @@ const userSchema = new Schema({
 
 userSchema.methods.addToCart = addToCart;
 userSchema.methods.deleteFromCart = deleteFromCart;
+userSchema.methods.clearCartItems = clearCartItems;
 
 module.exports = mongoose.model('User', userSchema);
 
-// const { ObjectId } = require("mongodb");
-// const getDb = require("../util/database").getDb;
-// class User {
-// 	constructor(username, email, cart, id) {
-// 		this.name = username;
-// 		this.email = email;
-// 		this.cart = cart;
-// 		this._id = id;
-// 	}
-
-// 	save() {
-// 		const db = getDb();
-// 		return db
-// 			.collection("users")
-// 			.insertOne(this)
-// 			.then(() => {
-// 				console.log("Insert successful");
-// 			})
-// 			.catch((err) => console.log(err));
-// 	}
 
 function addToCart(product) {
 		const cartProductIndex = this.cart.items.findIndex((cp) => {
@@ -90,28 +71,7 @@ function deleteFromCart(productId) {
   return this.save();
 };
 
-
-
-    
-//     getOrders() {
-//         const db = getDb();
-//         return db
-//             .collection('orders')
-//             .find({ 'user._id': this._id })
-//             .toArray();
-//     }
-
-// 	static findById(userId) {
-// 		const db = getDb();
-// 		return db
-// 			.collection("users")
-// 			.findOne({ _id: ObjectId.createFromHexString(userId) })
-// 			.then((user) => {
-// 				console.log(user);
-// 				return user;
-// 			})
-// 			.catch((err) => console.log(err));
-// 	}
-// }
-
-// module.exports = User;
+function clearCartItems() {
+	this.cart = { items: [] };
+	return this.save()
+};

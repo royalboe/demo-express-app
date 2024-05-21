@@ -14,9 +14,9 @@ const orderSchema = new Schema({
 			required: true
 		}
 	},
-	products: [
+	items: [
 		{
-			products: {
+			product: {
 				type: Object,
 				required: true
 			},
