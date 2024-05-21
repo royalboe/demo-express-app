@@ -1,12 +1,13 @@
 const express = require('express');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const path = require('path');
+const session = require("express-session");
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+const path = require("path");
 
-const adminRoutes = require('./routes/admin');
-const shopRoutes = require('./routes/shop');
-const authRoutes = require('./routes/auth')
-const errorController = require('./controllers/404')
+const adminRoutes = require("./routes/admin");
+const shopRoutes = require("./routes/shop");
+const authRoutes = require("./routes/auth");
+const errorController = require("./controllers/404");
 const User = require("./models/users");
 
 const uri = require("./util/database").uri;
@@ -35,6 +36,15 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // This allows you to access form data submitted in POST requests via req.body in your route handlers
 app.use(bodyParser.urlencoded({ extended: false }));
+
+// This is the middleware for the express-session
+app.use(
+	session({
+		secret: "My Secret Name Shop App",
+		resave: false,
+		saveUninitialized: false,
+	})
+);
 
 // This is to register the user
 app.use((req, res, next) => {

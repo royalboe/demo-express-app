@@ -20,3 +20,6 @@ npm install --save sequelize
 
 # Install mongoose
 npm install mongoose --save
+
+# Install express session
+npm install --save express-session
