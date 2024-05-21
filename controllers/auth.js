@@ -9,7 +9,7 @@ exports.getLogin = (req, res, next) => {
 };
 
 exports.postLogin = (req, res, next) => {
-  res.setHeader('Set-Cookie', 'isLoggedIn=true')
+  res.setHeader('Set-Cookie', 'isLoggedIn=true; HttpOnly')
   // req.isLoggedIn = true;
   res.redirect('/login');
 }
