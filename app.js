@@ -5,6 +5,7 @@ const path = require('path');
 
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
+const authRoutes = require('./routes/auth')
 const errorController = require('./controllers/404')
 const User = require("./models/users");
 
@@ -48,6 +49,8 @@ app.use((req, res, next) => {
 app.use("/admin", adminRoutes);
 
 app.use(shopRoutes);
+
+app.use(authRoutes);
 
 app.use(errorController.error);
 
