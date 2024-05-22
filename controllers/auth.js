@@ -49,4 +49,35 @@ exports.getSignup = (req, res, next) => {
 	});
 };
 
-exports.postSignup = (req, res, next) => { };
+exports.addUser = (req, res, next) => {
+	const email = req.body.email;
+	const fullname = req.body.fullname;
+	const password = req.body.password;
+	const confirmPassword = req.body.confirmPassword;
+
+	if (password !== confirmPassword) {
+		return res.redirect("/signup");
+	}
+
+	User.findOne({ email: email })
+		.then((userdoc) => {
+			if (userdoc) {
+				return res.redirect("/signup");
+			}
+			const user = new User({
+				fullname,
+				email,
+				password,
+				cart: { items: [] },
+				created: new Date(),
+			});
+
+			console.log(email, fullname, password);
+			return user.save();
+		})
+		.then(() => {
+			console.log("Inserted user");
+			res.redirect("/login");
+		})
+		.catch((err) => console.log(err));
+};

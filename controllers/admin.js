@@ -56,7 +56,7 @@ exports.getProducts = (req, res, next) => {
 	// This will return all products and select fields to be returned
 	.select("title price -_id imageURL description")
 	// This will populate the userId field with the username field
-	.populate("userId", "username")
+	.populate("userId", "fullname", "email")
 		.then((products) => {
 			console.log(products);
 			res.render("admin/products", {
@@ -100,22 +100,4 @@ exports.deleteProduct = (req, res, next) => {
 			console.log("Product deleted");
 		})
 		.catch(err => console.log(err));	
-}
-
-exports.addUser = (req, res, next) => {
-	const email = req.body.email;
-	const username = req.body.username;
-	console.log(email, username);
-	const user = new User({
-		username,
-		email,
-		cart: { items: [] },
-		created: new Date(),
-	});
-	user.save().then(() => {
-		res.redirect("/admin/products");
-		console.log('Inserted user');
-	}
-	).catch(err => console.log(err));
-
 }

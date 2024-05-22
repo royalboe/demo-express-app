@@ -77,18 +77,18 @@ app.use(errorController.error);
 mongoose
 	.connect(MONGODB_URI)
 	.then(() => {
-		User.findOne().then(user => {
-			if (!user) {
-				// Create new user
-				const user = new User({
-					username: "Test",
-					email: "test@test.com",
-					cart: { items: [] },
-					created: new Date(),
-				});
-				user.save();
-			}
-		})
+		// User.findOne().then(user => {
+		// 	if (!user) {
+		// 		// Create new user
+		// 		const user = new User({
+		// 			username: "Test",
+		// 			email: "test@test.com",
+		// 			cart: { items: [] },
+		// 			created: new Date(),
+		// 		});
+		// 		user.save();
+		// 	}
+		// })
 		console.log("Connected");
 		app.listen(3000);
 	})

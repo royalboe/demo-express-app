@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-	username: {
+	fullname: {
 		type: String,
 		required: true,
 		unique: true,
@@ -16,7 +16,12 @@ const userSchema = new Schema({
     unique: true,
     trim: true,
     minlength: 3
-  },
+	},
+	password: {
+		type: String,
+		required: true,
+		minlength: 3
+	},
   cart: {
     items: [{
       productId: {
