@@ -39,3 +39,14 @@ exports.postLogout = (req, res, next) => {
 		res.redirect("/login");
 	});
 };
+
+// To get the sign up page
+exports.getSignup = (req, res, next) => {
+	res.render("auth/signup", {
+		path: "/signup",
+		docTitle: "Signup",
+		isAuthenticated: false,
+	});
+};
+
+exports.postSignup = (req, res, next) => { };
