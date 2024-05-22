@@ -3,66 +3,65 @@ const Order = require("../models/orders");
 
 // Renders view-products view
 exports.getProducts = (req, res, next) => {
-  Product
-    .find()
-    // .fetchAll()
-    .then((products) => {
-      res.render("shop/view-products", {
+	Product.find()
+		// .fetchAll()
+		.then((products) => {
+			res.render("shop/view-products", {
 				prods: products,
 				docTitle: "All Products",
 				path: "/products",
 				hasProducts: products.length > 0,
-				isAuthenticated: req.isLoggedIn
+				isAuthenticated: req.session.user ? req.session.user.isLoggedIn : false,
 			});
-  }).catch((err) => console.log(err));
+		})
+		.catch((err) => console.log(err));
 };
 
 // Renders product-details view
 exports.getProductDetails = (req, res, next) => {
-  const prodId = req.params.productId;
-  // Using the builtin findById mongoose method
-  Product.findById(prodId)
-    .then(product => {
-      res.render("shop/product-details", {
+	const prodId = req.params.productId;
+	// Using the builtin findById mongoose method
+	Product.findById(prodId)
+		.then((product) => {
+			res.render("shop/product-details", {
 				product: product,
 				docTitle: product.title,
 				path: "/products",
-				isAuthenticated: req.isLoggedIn
+				isAuthenticated: req.session.user ? req.session.user.isLoggedIn : false,
 			});
-  })
-    .catch(err => console.log(err)); 
-}
+		})
+		.catch((err) => console.log(err));
+};
 
 // Renders index view for home
 exports.getIndex = (req, res, next) => {
-  // Fetches all products from the database
-  Product
-    .find()
-    // .fetchAll()
-    .then(products => {
-      res.render("shop/index", {
+	// Fetches all products from the database
+	Product.find()
+		// .fetchAll()
+		.then((products) => {
+			res.render("shop/index", {
 				prods: products,
 				docTitle: "Shop",
 				path: "/",
 				hasProducts: products.length > 0,
-				isAuthenticated: req.isLoggedIn
+				isAuthenticated: req.session.user ? req.session.user.isLoggedIn : false,
 			});
-    })
-    .catch((err) => console.log(err));
+		})
+		.catch((err) => console.log(err));
 };
 
 // Renders cart view
 exports.getCart = (req, res, next) => {
 	req.user
-    .populate("cart.items.productId")
-    .then((user) => {
-      const products = user.cart.items;
+		.populate("cart.items.productId")
+		.then((user) => {
+			const products = user.cart.items;
 			res.render("shop/cart", {
 				path: "/cart",
 				docTitle: "Your Cart",
 				hasProducts: products.length > 0,
 				products: products,
-				isAuthenticated: req.isLoggedIn
+				isAuthenticated: req.session.user ? req.session.user.isLoggedIn : false,
 			});
 		})
 		.catch((err) => console.log(err));
@@ -82,18 +81,18 @@ exports.postCart = (req, res, next) => {
 
 // Controller to delete items from the cart
 exports.postCartDeleteProduct = (req, res, next) => {
-  const prodId = req.body.productId;
-  req.user
-    .deleteFromCart(prodId)
+	const prodId = req.body.productId;
+	req.user
+		.deleteFromCart(prodId)
 		.then(() => {
 			res.redirect("/cart");
 		})
 		.catch((err) => console.log(err));
-}
+};
 
 // Post Orders
 exports.postOrder = (req, res, next) => {
-  req.user
+	req.user
 		.populate("cart.items.productId")
 		.then((user) => {
 			const products = user.cart.items.map((i) => {
@@ -104,8 +103,8 @@ exports.postOrder = (req, res, next) => {
 			});
 			const order = new Order({
 				user: {
-					name: req.user.username,
-					userId: req.user,
+					name: user.username,
+					userId: user,
 				},
 				items: products,
 			});
@@ -116,22 +115,29 @@ exports.postOrder = (req, res, next) => {
 		})
 		.then(() => res.redirect("/orders"))
 		.catch((err) => console.log(err));
-}
+};
 
 // Renders Order View
 exports.getOrders = (req, res, next) => {
-	Order.find({'user.userId' : req.user._id})
-		.then(orders => {
+	Order.find({ "user.userId": req.user._id })
+		.then((orders) => {
 			res.render("shop/orders", {
 				path: "/orders",
 				docTitle: "Your Orders",
 				orders: orders,
-				isAuthenticated: req.isLoggedIn
+				isAuthenticated: req.session.user ? req.session.user.isLoggedIn : false,
 			});
 		})
-		.catch(err => console.log(err));
+		.catch((err) => console.log(err));
 };
 
+// post reset cart
+exports.postResetCart = (req, res, next) => {
+	req.user
+		.clearCartItems()
+		.then(() => res.redirect("/"))
+		.catch((err) => console.log(err));
+};
 // // Renders Checkout View
 // exports.getCheckout = (req, res, next) => {
 //   res.render("shop/checkout", {

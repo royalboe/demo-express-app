@@ -3,12 +3,13 @@ const mongoose = require('mongoose');
 const User = require('../models/users');
 const { ObjectId } = require("mongodb");
 
+
 // Renders the add product view to give product details
 exports.addProducts = (req, res, next) => {
 	res.render("admin/add-product", {
 		docTitle: "Add Product",
 		path: "/admin/add-product",
-		isAuthenticated: req.isLoggedIn
+		isAuthenticated: req.session.user ? req.session.user.isLoggedIn : false,
 	});
 };
 
@@ -18,7 +19,7 @@ exports.postProducts = (req, res, next) => {
 	const imageURL = req.body.imageURL;
 	const price = req.body.price;
 	const description = req.body.description;
-	const userId = req.user._id
+	const userId = req.user._id;
 
 
 	// Create a product to save
@@ -43,7 +44,7 @@ exports.editProduct = (req, res, next) => {
 			path: "/admin/edit-product",
 			editing: editMode,
 			product: product,
-			isAuthenticated: req.isLoggedIn
+			isAuthenticated: req.session.user ? req.session.user.isLoggedIn : false,
 		});
 	});
 };
@@ -63,7 +64,7 @@ exports.getProducts = (req, res, next) => {
 				docTitle: "Admin Products",
 				path: "/admin/products",
 				hasProducts: products.length > 0,
-				isAuthenticated: req.isAuthenticated
+				isAuthenticated: req.session.user ? req.session.user.isLoggedIn : false,
 			});
 		})
 		.catch((err) => console.log(err));

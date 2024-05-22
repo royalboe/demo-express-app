@@ -45,8 +45,8 @@ router.get('/orders', shopController.getOrders);
 // /create-order => POST Method
 router.post('/create-order', shopController.postOrder);
 
-// // Router for the reset-cart path
-// // /reset-cart => POST Method
-// router.post('/reset-cart', shopController.postResetCart);
+// Router for the reset-cart path
+// /reset-cart => POST Method
+router.post('/reset-cart', shopController.postResetCart);
 
 module.exports = router;

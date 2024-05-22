@@ -58,7 +58,7 @@ function addToCart(product) {
 			items: updatedCartItems,
 		};
 		this.cart = updatedCart;
-		this.save();
+		return this.save();
 };
 
 function deleteFromCart(productId) {

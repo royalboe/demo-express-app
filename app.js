@@ -48,14 +48,17 @@ app.use(
 	session({
 		secret: "My Secret Name Shop App",
 		resave: false,
-		saveUninitialized: false,
+		saveUninitialized: true,
 		store:store
 	})
 );
 
 // This is to register the user
 app.use((req, res, next) => {
-	User.findById('66492d78a65d7290a037cd9c')
+	if (!req.session.user) {
+		return next();
+	}
+	User.findById(req.session.user.user._id)
 		.then(user => {
 			req.user = user;
 			next();
