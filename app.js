@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const path = require("path");
 
+const isAuth = require("./middleware/is-auth");
 const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 const authRoutes = require("./routes/auth");
@@ -66,7 +67,7 @@ app.use((req, res, next) => {
 		.catch(err => console.log(err));
 });
 
-app.use("/admin", adminRoutes);
+app.use("/admin", isAuth, adminRoutes);
 
 app.use(shopRoutes);
 
