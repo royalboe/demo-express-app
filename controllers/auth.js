@@ -1,28 +1,46 @@
-const User = require('../models/users')
+const User = require("../models/users");
+const bcrypt = require("bcryptjs");
 
 exports.getLogin = (req, res, next) => {
-  // const isLoggedIn = req.get('Cookie').trim().split('=')[1];
-  res.render("auth/login", {
+	// const isLoggedIn = req.get('Cookie').trim().split('=')[1];
+	res.render("auth/login", {
 		path: "/login",
 		docTitle: "Login",
-		isAuthenticated: req.session.user ? req.session.user.isLoggedIn : false
+		isAuthenticated: req.session.user ? req.session.user.isLoggedIn : false,
 	});
 };
 
 exports.postLogin = (req, res, next) => {
-	User.findById("66492d78a65d7290a037cd9c")
+	const email = req.body.email;
+	const password = req.body.password;
+	User.findOne({ email: email })
 		.then((user) => {
-			req.session.user = {
-				user: user,
-				isLoggedIn: true,
-			};
-			req.session.save((err) => {
-				if (err) {
+			if (!user) {
+				return res.redirect("/login");
+			}
+			bcrypt
+				.compare(password, user.password)
+				.then((isMatch) => {
+					if (isMatch) {
+						req.session.user = {
+							user: user,
+							isLoggedIn: true,
+						};
+						return req.session.save((err) => {
+							if (err) {
+								console.log(err);
+								return next(err); // Handle error appropriately
+							}
+							res.redirect("/");
+						});
+					}
+					res.redirect("/login");
+				})
+				.catch((err) => {
 					console.log(err);
-					return next(err); // Handle error appropriately
-				}
-				res.redirect("/login");
-			});
+					res.redirect("/login");
+				});
+
 		})
 		.catch((err) => {
 			console.log(err);
@@ -64,17 +82,19 @@ exports.addUser = (req, res, next) => {
 			if (userdoc) {
 				return res.redirect("/signup");
 			}
-			const user = new User({
-				fullname,
-				email,
-				password,
-				cart: { items: [] },
-				created: new Date(),
+			return bcrypt.hash(password, 12).then((hashedPassword) => {
+				console.log(hashedPassword);
+				const user = new User({
+					fullname,
+					email,
+					password: hashedPassword,
+					cart: { items: [] },
+					created: new Date(),
+				});
+				console.log(email, fullname, password);
+				return user.save();
 			});
-
-			console.log(email, fullname, password);
-			return user.save();
-		})
+	})
 		.then(() => {
 			console.log("Inserted user");
 			res.redirect("/login");
