@@ -72,6 +72,7 @@ exports.addUser = (req, res, next) => {
 	const fullname = req.body.fullname;
 	const password = req.body.password;
 	const confirmPassword = req.body.confirmPassword;
+	console.log(email, fullname, password, confirmPassword);
 
 	if (password !== confirmPassword) {
 		return res.redirect("/signup");
@@ -91,7 +92,6 @@ exports.addUser = (req, res, next) => {
 					cart: { items: [] },
 					created: new Date(),
 				});
-				console.log(email, fullname, password);
 				return user.save();
 			});
 	})

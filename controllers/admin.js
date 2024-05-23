@@ -9,7 +9,7 @@ exports.addProducts = (req, res, next) => {
 	res.render("admin/add-product", {
 		docTitle: "Add Product",
 		path: "/admin/add-product",
-		isAuthenticated: req.session.user ? req.session.user.isLoggedIn : false,
+		// isAuthenticated: req.session.user ? req.session.user.isLoggedIn : false,
 	});
 };
 
@@ -44,7 +44,7 @@ exports.editProduct = (req, res, next) => {
 			path: "/admin/edit-product",
 			editing: editMode,
 			product: product,
-			isAuthenticated: req.session.user ? req.session.user.isLoggedIn : false,
+			// isAuthenticated: req.session.user ? req.session.user.isLoggedIn : false,
 		});
 	});
 };
@@ -64,7 +64,7 @@ exports.getProducts = (req, res, next) => {
 				docTitle: "Admin Products",
 				path: "/admin/products",
 				hasProducts: products.length > 0,
-				isAuthenticated: req.session.user ? req.session.user.isLoggedIn : false,
+				// isAuthenticated: req.session.user ? req.session.user.isLoggedIn : false,
 			});
 		})
 		.catch((err) => console.log(err));

@@ -28,6 +28,7 @@
             <% if (isAuthenticated) { %>
                 <li class="main-header__item">
                     <form action="/logout" method="POST" style="display: inline;">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         <button type="submit" style="background: none; border: none; color: inherit; cursor: pointer; padding: 0; font: inherit; outline: inherit;">Logout</button>
                     </form>
                 </li>
@@ -77,6 +78,7 @@
         <% } else { %>
             <li class="mobile-nav__item">
                 <form action="/logout" method="post">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     <button type="submit">Logout</button>
                 </form>
             </li>

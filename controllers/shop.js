@@ -44,7 +44,8 @@ exports.getIndex = (req, res, next) => {
 				docTitle: "Shop",
 				path: "/",
 				hasProducts: products.length > 0,
-				isAuthenticated: req.session.user ? req.session.user.isLoggedIn : false,
+				// isAuthenticated: req.session.user ? req.session.user.isLoggedIn : false,
+				// csrfToken: req.csrfToken(),
 			});
 		})
 		.catch((err) => console.log(err));
@@ -61,7 +62,7 @@ exports.getCart = (req, res, next) => {
 				docTitle: "Your Cart",
 				hasProducts: products.length > 0,
 				products: products,
-				isAuthenticated: req.session.user ? req.session.user.isLoggedIn : false,
+				// isAuthenticated: req.session.user ? req.session.user.isLoggedIn : false,
 			});
 		})
 		.catch((err) => console.log(err));
@@ -103,7 +104,7 @@ exports.postOrder = (req, res, next) => {
 			});
 			const order = new Order({
 				user: {
-					name: user.fullname,
+					email: user.email,
 					userId: user,
 				},
 				items: products,
@@ -125,7 +126,7 @@ exports.getOrders = (req, res, next) => {
 				path: "/orders",
 				docTitle: "Your Orders",
 				orders: orders,
-				isAuthenticated: req.session.user ? req.session.user.isLoggedIn : false,
+				// isAuthenticated: req.session.user ? req.session.user.isLoggedIn : false,
 			});
 		})
 		.catch((err) => console.log(err));

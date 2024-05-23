@@ -26,3 +26,12 @@ npm install --save express-session
 
 # Install mogodb session
 npm install --save connect-mongodb-session
+
+# Install bcrpyt
+npm install --save bcrypt
+
+# Install bcryptjs
+npm install --save bcryptjs
+
+# Install csrf for protection
+npm install --save csurf

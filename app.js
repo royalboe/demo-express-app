@@ -4,6 +4,7 @@ const MongoDbStore = require('connect-mongodb-session')(session);
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const path = require("path");
+const csrf = require('csurf');
 
 const isAuth = require("./middleware/is-auth");
 const adminRoutes = require("./routes/admin");
@@ -54,6 +55,8 @@ app.use(
 	})
 );
 
+app.use(csrf());
+
 // This is to register the user
 app.use((req, res, next) => {
 	if (!req.session.user) {
@@ -67,6 +70,12 @@ app.use((req, res, next) => {
 		.catch(err => console.log(err));
 });
 
+app.use((req, res, next) => {
+	res.locals.isAuthenticated = req.session.user ? req.session.user.isLoggedIn : false;
+	res.locals.csrfToken = req.csrfToken();
+	next();
+});
+
 app.use("/admin", isAuth, adminRoutes);
 
 app.use(shopRoutes);
@@ -78,18 +87,6 @@ app.use(errorController.error);
 mongoose
 	.connect(MONGODB_URI)
 	.then(() => {
-		// User.findOne().then(user => {
-		// 	if (!user) {
-		// 		// Create new user
-		// 		const user = new User({
-		// 			username: "Test",
-		// 			email: "test@test.com",
-		// 			cart: { items: [] },
-		// 			created: new Date(),
-		// 		});
-		// 		user.save();
-		// 	}
-		// })
 		console.log("Connected");
 		app.listen(3000);
 	})
