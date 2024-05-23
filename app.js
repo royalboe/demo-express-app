@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const path = require("path");
 const csrf = require('csurf');
+const flash = require('connect-flash');
 
 const isAuth = require("./middleware/is-auth");
 const adminRoutes = require("./routes/admin");
@@ -56,6 +57,9 @@ app.use(
 );
 
 app.use(csrf());
+
+// Flash error message
+app.use(flash());
 
 // This is to register the user
 app.use((req, res, next) => {
