@@ -36,5 +36,8 @@ npm install --save bcryptjs
 # Install csrf for protection
 npm install --save csurf
 
-# For a mailling server
+# For a mailing server
 npm install --save nodemailer nodemailer-sendgrid-transport
+
+# For environment variables
+npm install --save dotenv

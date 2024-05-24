@@ -1,8 +1,7 @@
 const mongodb = require('mongodb');
 const MongoClient = mongodb.MongoClient;
 
-exports.MONGODB_URI =
-	"mongodb+srv://demo-user:QBsj3cAEz3AC7lze@royalboe.bkop7jb.mongodb.net/shopdb?retryWrites=true&w=majority&appName=Royalboe";
+exports.MONGODB_URI = process.env.MONGODB_URI;
 
 let _db;
 const mongoConnect = (callback) => {

@@ -7,12 +7,18 @@ const path = require("path");
 const csrf = require('csurf');
 const flash = require('connect-flash');
 
+// const { google } = require("googleapis");
+const dotenv = require('dotenv');
+
+
 const isAuth = require("./middleware/is-auth");
 const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 const authRoutes = require("./routes/auth");
 const errorController = require("./controllers/404");
 const User = require("./models/users");
+
+dotenv.config();
 
 const MONGODB_URI = require("./util/database").MONGODB_URI;
 
