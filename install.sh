@@ -35,3 +35,6 @@ npm install --save bcryptjs
 
 # Install csrf for protection
 npm install --save csurf
+
+# For a mailling server
+npm install --save nodemailer nodemailer-sendgrid-transport
