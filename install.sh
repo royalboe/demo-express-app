@@ -41,3 +41,6 @@ npm install --save nodemailer nodemailer-sendgrid-transport
 
 # For environment variables
 npm install --save dotenv
+
+# For Express validator
+npm install --save express-validator

@@ -258,13 +258,13 @@ exports.postNewPassword = (req, res, next) => {
 		})
 		.then(() => {
 			res.redirect("/login");
-			transporter.sendMail({
+			return transporter.sendMail({
 				from: {
 					name: "Shop App",
 					address: process.env.EMAIL,
 				},
-				to: email,
-				subject: "Password reset",
+				to: resetUser.email,
+				subject: "Password reset successful",
 				html: `
 						<p>Password Reset Successful</p>
 						<p>Click this <a href="http://localhost:3000/login">link</a> to login.</p>
