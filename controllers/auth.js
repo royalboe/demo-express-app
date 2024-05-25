@@ -147,3 +147,18 @@ exports.addUser = (req, res, next) => {
 		})
 		.catch((err) => console.log(err));
 };
+
+// To get the Reset Password page
+exports.getResetPage = (req, res, next) => {
+	let errorMessage = req.flash("error");
+	if (errorMessage.length > 0) {
+		errorMessage = errorMessage[0];
+	} else {
+		errorMessage = null;
+	}
+	res.render("auth/reset", {
+		path: "/reset",
+		docTitle: "Reset Password",
+		errorMessage,
+	});
+};
