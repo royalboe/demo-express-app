@@ -3,6 +3,7 @@ const crypto = require("crypto");
 const User = require("../models/users");
 const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
+const { validationResult } = require("express-validator");
 
 const transporter = nodemailer.createTransport({
 	service: "gmail",
@@ -103,6 +104,15 @@ exports.addUser = (req, res, next) => {
 	const fullname = req.body.fullname;
 	const password = req.body.password;
 	const confirmPassword = req.body.confirmPassword;
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		console.log(errors.array());
+		return res.status(422).render("auth/signup", {
+			path: "/signup",
+			docTitle: "Signup",
+			errorMessage: errors.array()[0].msg,
+		});
+	}
 	console.log(email, fullname, password, confirmPassword);
 
 	// make sure password is a match with confirm password
