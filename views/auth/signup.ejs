@@ -17,25 +17,45 @@
             <!-- Fullname of the user -->
             <div class="form-control">
                 <label for="fullname">Fullname</label>
-                <input type="fullname" name="fullname" id="fullname">
+                <input 
+                    class="<%= validationErrors.find(e => e.path === 'fullname') ? 'invalid' : '' %>"
+                    type="fullname" 
+                    name="fullname" 
+                    id="fullname" 
+                    value="<%= oldValue.fullname %>">
             </div>
 
             <!-- Users email address -->
             <div class="form-control">
                 <label for="email">E-Mail</label>
-                <input type="email" name="email" id="email">
+                <input 
+                    class="<%= validationErrors.find(e => e.path === 'email') ? 'invalid' : '' %>"
+                    type="email" 
+                    name="email" 
+                    id="email" 
+                    value="<%= oldValue.email %>">
             </div>
 
             <!-- Users password input  -->
             <div class="form-control">
                 <label for="password">Password</label>
-                <input type="password" name="password" id="password">
+                <input 
+                    class="<%= validationErrors.find(e => e.path === 'password') ? 'invalid' : '' %>"
+                    type="password" 
+                    name="password" 
+                    id="password" 
+                    value="<%= oldValue.password %>">
             </div>
 
             <!-- Repeat password  -->
             <div class="form-control">
                 <label for="confirmPassword">Confirm Password</label>
-                <input type="password" name="confirmPassword" id="confirmPassword">
+                <input 
+                class="<%= validationErrors.find(e => e.path === 'confirmPassword') ? 'invalid' : '' %>"
+                type="password" 
+                name="confirmPassword" 
+                id="confirmPassword" 
+                value="<%= oldValue.confirmPassword %>">
             </div>
             <button class="btn" type="submit">Sign Up</button>
         </form>

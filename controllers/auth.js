@@ -29,19 +29,47 @@ exports.getLogin = (req, res, next) => {
 		path: "/login",
 		docTitle: "Login",
 		errorMessage,
+		oldValue: {
+			email: "",
+			password: "",
+		},
+		validationErrors: [],
 	});
 };
 
 exports.postLogin = (req, res, next) => {
 	const email = req.body.email;
-	console.log(email);
 	const password = req.body.password;
-	console.log(password);
+	const errors = validationResult(req);
+
+	if (!errors.isEmpty()) {
+		console.log(errors.array());
+		return res.status(422).render("auth/login", {
+			path: "/login",
+			docTitle: "Login",
+			errorMessage: errors.array()[0].msg,
+			oldValue: {
+				email: email,
+				password: password,
+			},
+			validationErrors: errors.array(),
+		});
+	}
+
 	User.findOne({ email: email })
 		.then((user) => {
 			if (!user) {
 				req.flash("error", "Invalid email or password.");
-				return res.redirect("/login");
+				return res.status(422).render("auth/login", {
+					path: "/login",
+					docTitle: "Login",
+					errorMessage: "Invalid email or password.",
+					oldValue: {
+						email: email,
+						password: password,
+					},
+					validationErrors: [],
+				});
 			}
 			bcrypt
 				.compare(password, user.password)
@@ -60,12 +88,30 @@ exports.postLogin = (req, res, next) => {
 						});
 					}
 					req.flash("error", "Invalid email or password.");
-					res.redirect("/login");
+					return res.status(422).render("auth/login", {
+						path: "/login",
+						docTitle: "Login",
+						errorMessage: "Invalid email or password.",
+						oldValue: {
+							email: email,
+							password: password,
+						},
+						validationErrors: [],
+					});
 				})
 				.catch((err) => {
 					console.log(err);
 					req.flash("error", "Invalid email or password");
-					res.redirect("/login");
+					return res.status(422).render("auth/login", {
+						path: "/login",
+						docTitle: "Login",
+						errorMessage: "Invalid email or password.",
+						oldValue: {
+							email: email,
+							password: password,
+						},
+						validationErrors: [],
+					});
 				});
 		})
 		.catch((err) => {
@@ -96,6 +142,13 @@ exports.getSignup = (req, res, next) => {
 		path: "/signup",
 		docTitle: "Signup",
 		errorMessage,
+		oldValue: {
+			email: "",
+			password: "",
+			confirmPassword: "",
+			fullname: "",
+		},
+		validationErrors: [],
 	});
 };
 
@@ -103,7 +156,6 @@ exports.addUser = (req, res, next) => {
 	const email = req.body.email;
 	const fullname = req.body.fullname;
 	const password = req.body.password;
-	const confirmPassword = req.body.confirmPassword;
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) {
 		console.log(errors.array());
@@ -111,49 +163,40 @@ exports.addUser = (req, res, next) => {
 			path: "/signup",
 			docTitle: "Signup",
 			errorMessage: errors.array()[0].msg,
+			oldValue: {
+				email: email,
+				password: password,
+				confirmPassword: req.body.confirmPassword,
+				fullname: fullname,
+			},
+			validationErrors: errors.array(),
 		});
 	}
-	console.log(email, fullname, password, confirmPassword);
 
-	// make sure password is a match with confirm password
-	if (password !== confirmPassword) {
-		req.flash("error", "Please confirm your password.");
-		return res.redirect("/signup");
-	}
-
-	// Check if user exists
-	User.findOne({ email: email })
-		.then((userdoc) => {
-			if (userdoc) {
-				req.flash("error", "E-mail exists, kindly pick a new one");
-				return res.redirect("/signup");
-			}
-			return bcrypt
-				.hash(password, 12)
-				.then((hashedPassword) => {
-					const user = new User({
-						fullname,
-						email,
-						password: hashedPassword,
-						cart: { items: [] },
-						created: new Date(),
-					});
-					return user.save();
-				})
-				.then(() => {
-					console.log("Inserted user");
-					res.redirect("/login");
-					return transporter.sendMail({
-						from: {
-							name: "Shop App",
-							address: process.env.EMAIL,
-						},
-						to: email,
-						subject: "Signup succeeded!",
-						html: "<h1>You successfully signed up!</h1>",
-					});
-				})
-				.catch((err) => console.log(err));
+	bcrypt
+		.hash(password, 12)
+		.then((hashedPassword) => {
+			const user = new User({
+				fullname,
+				email,
+				password: hashedPassword,
+				cart: { items: [] },
+				created: new Date(),
+			});
+			return user.save();
+		})
+		.then(() => {
+			console.log("Inserted user");
+			res.redirect("/login");
+			return transporter.sendMail({
+				from: {
+					name: "Shop App",
+					address: process.env.EMAIL,
+				},
+				to: email,
+				subject: "Signup succeeded!",
+				html: "<h1>You successfully signed up!</h1>",
+			});
 		})
 		.catch((err) => console.log(err));
 };

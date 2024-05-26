@@ -1,12 +1,27 @@
 const express = require('express');
 const authController = require("../controllers/auth");
+const User = require("../models/users");
 const { check, body } = require("express-validator");
 
 const router = express.Router();
 
 router.get("/login", authController.getLogin);
 
-router.post("/login", authController.postLogin);
+router.post(
+	"/login",
+	[
+		body("email")
+			.isEmail()
+			.withMessage("Please enter a valid email")
+			.normalizeEmail(),
+		body("password", "Password must be at least 6 characters long")
+			.trim()
+			.isLength({ min: 8 })
+			.isAlphanumeric()
+			.withMessage("Password must be alphanumeric"),
+	],
+	authController.postLogin
+);
 
 router.post("/logout", authController.postLogout);
 
@@ -14,26 +29,40 @@ router.get("/signup", authController.getSignup);
 
 router.post(
 	"/signup",
-  [
-    check("email")
-		.isEmail()
-		.withMessage("Please enter a valid email address")
-		.custom((value, { req }) => {
-			if (value === "testtwo@test.com") {
-				throw new Error("This email address is forbidden");
-      }
-      return true;
-    }),
-    body("password", "Password must be at least 6 characters long")
-      .isLength({ min: 8 })
-      .isAlphanumeric(),
-    body("confirmPassword").custom((value, { req }) => {
-        if (value !== req.body.password) {
-          throw new Error("Passwords do not match");
-        }
-        return true;
-      }),
-  ],
+	[
+		check("email")
+			.isEmail()
+			.withMessage("Please enter a valid email address")
+			.normalizeEmail()
+			.custom((value, { req }) => {
+				return User.findOne({ email: value }).then((userDoc) => {
+					if (userDoc) {
+						return Promise.reject("E-mail exists, kindly pick a new one");
+					}
+				});
+			}),
+		body("password", "Password must be at least 6 characters long")
+			.trim()
+			.isLength({ min: 8 })
+			.isAlphanumeric()
+			.withMessage("Password must be alphanumeric"),
+		body("confirmPassword")
+			.trim()
+			.notEmpty()
+			.withMessage("Please confirm your password")
+			.custom((value, { req }) => {
+				if (value !== req.body.password) {
+					throw new Error("Passwords do not match");
+				}
+				return true;
+			}),
+		check("fullname", "Please enter a valid name")
+			.notEmpty()
+			.withMessage("Please enter your fullname")
+			.trim()
+			.isLength({ min: 3 })
+			.withMessage("Please enter a valid fullname"),
+	],
 	authController.addUser
 );
 
