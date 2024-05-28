@@ -1,11 +1,19 @@
 const Product = require("../models/product");
+const { validationResult } = require("express-validator");
 
 // Renders the add product view to give product details
 exports.addProducts = (req, res, next) => {
 	res.render("admin/add-product", {
 		docTitle: "Add Product",
 		path: "/admin/add-product",
-		// isAuthenticated: req.session.user ? req.session.user.isLoggedIn : false,
+		errorMessage: "",
+		validationErrors: [],
+		product: {
+			title: "",
+			imageURL: "",
+			price: "",
+			description: "",
+		},
 	});
 };
 
@@ -16,6 +24,25 @@ exports.postProducts = (req, res, next) => {
 	const price = req.body.price;
 	const description = req.body.description;
 	const userId = req.user._id;
+	const errors = validationResult(req);
+
+	if (!errors.isEmpty()) {
+		console.log('Errors found');
+		return res.status(422).render("admin/add-product", {
+			docTitle: "Add Product",
+			path: "/admin/add-product",
+			errorMessage: errors.array()[0].msg,
+			validationErrors: errors.array(),
+			product: {
+				title: title,
+				imageURL: imageURL,
+				price: price,
+				description: description,
+				userId,
+			},
+		});
+		
+	}
 
 	// Create a product to save
 	const product = new Product({
@@ -45,7 +72,8 @@ exports.editProduct = (req, res, next) => {
 			path: "/admin/edit-product",
 			editing: editMode,
 			product: product,
-			// isAuthenticated: req.session.user ? req.session.user.isLoggedIn : false,
+			validationErrors: [],
+			errorMessage: "",
 		});
 	});
 };
@@ -64,7 +92,8 @@ exports.getProducts = (req, res, next) => {
 				docTitle: "Admin Products",
 				path: "/admin/products",
 				hasProducts: products.length > 0,
-				// isAuthenticated: req.session.user ? req.session.user.isLoggedIn : false,
+				validationErrors: [],
+				errorMessage: "",
 			});
 		})
 		.catch((err) => console.log(err));
@@ -77,6 +106,27 @@ exports.postEditProduct = (req, res, next) => {
 	const updatedPrice = req.body.price;
 	const updatedDescription = req.body.description;
 	const userId = req.user._id;
+	const errors = validationResult(req);
+
+	if (!errors.isEmpty()) {
+		console.log('Errors found');
+		return res.status(422).render("admin/edit-product", {
+			docTitle: "Edit Product",
+			path: "/admin/edit-product",
+			editing: true,
+			product: {
+				title: updatedTitle,
+				imageURL: updatedImageURL,
+				price: updatedPrice,
+				description: updatedDescription,
+				_id: productId,
+			},
+			errorMessage: errors.array()[0].msg,
+			validationErrors: errors.array(),
+		});
+		
+	}
+
 	Product.findById(productId)
 		.then((product) => {
 			if (userId.toString() !== product.userId.toString()) {
