@@ -15,7 +15,7 @@ const isAuth = require("./middleware/is-auth");
 const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 const authRoutes = require("./routes/auth");
-const errorController = require("./controllers/404");
+const errorController = require("./controllers/error");
 const User = require("./models/users");
 
 dotenv.config();
@@ -74,10 +74,16 @@ app.use((req, res, next) => {
 	}
 	User.findById(req.session.user.user._id)
 		.then(user => {
+			if (!user) {
+				return next();
+			}
 			req.user = user;
 			next();
 		})
-		.catch(err => console.log(err));
+		.catch(err => {
+			console.log(err);
+			throw new Error(err);
+		});
 });
 
 app.use((req, res, next) => {
@@ -92,7 +98,10 @@ app.use(shopRoutes);
 
 app.use(authRoutes);
 
-app.use(errorController.error);
+app.use("/500", errorController.get500);
+
+app.use(errorController.get404);
+
 
 mongoose
 	.connect(MONGODB_URI)

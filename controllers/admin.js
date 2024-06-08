@@ -56,7 +56,21 @@ exports.postProducts = (req, res, next) => {
 		.save()
 		.then(() => console.log("Inserted"))
 		.then(() => res.redirect("/admin/products"))
-		.catch((err) => console.log(err));
+		.catch((err) => {
+			// return res.status(500).render("admin/add-product", {
+			// 	docTitle: "Add Product",
+			// 	path: "/admin/add-product",
+			// 	errorMessage: "Database operation failed, please try again.",
+			// 	validationErrors: [],
+			// 	product: {
+			// 		title,
+			// 		imageURL,
+			// 		price,
+			// 		description
+			// 	},
+			// });
+			res.redirect("/500");
+		});
 };
 
 // To edit a single product
