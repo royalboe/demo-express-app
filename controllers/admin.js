@@ -69,7 +69,10 @@ exports.postProducts = (req, res, next) => {
 			// 		description
 			// 	},
 			// });
-			res.redirect("/500");
+			// res.redirect("/500");
+			const error = new Error(err);
+			error.httpStatusCode = 500;
+			return next(error);
 		});
 };
 
@@ -80,7 +83,13 @@ exports.editProduct = (req, res, next) => {
 		return res.redirect("/admin/products");
 	}
 	const productId = req.params.productId;
-	Product.findById(productId).then((product) => {
+	Product.findById(productId)
+		.then((product) => {
+			throw new Error("Dummy");
+			if (!product) {
+				return res.redirect("/admin/products");
+			}
+		
 		res.render("admin/edit-product", {
 			docTitle: "Edit Product",
 			path: "/admin/edit-product",
@@ -89,7 +98,12 @@ exports.editProduct = (req, res, next) => {
 			validationErrors: [],
 			errorMessage: "",
 		});
-	});
+		})
+		.catch(err => {
+			const error = new Error(err);
+			error.httpStatusCode = 500;
+			return next(error);
+		});
 };
 
 // Controller to render the admin product page
@@ -110,7 +124,11 @@ exports.getProducts = (req, res, next) => {
 				errorMessage: "",
 			});
 		})
-		.catch((err) => console.log(err));
+		.catch((err) => (err) => {
+			const error = new Error(err);
+			error.httpStatusCode = 500;
+			return next(error);
+		});
 };
 
 exports.postEditProduct = (req, res, next) => {
@@ -155,7 +173,11 @@ exports.postEditProduct = (req, res, next) => {
 				res.redirect("/admin/products");
 			});
 		})
-		.catch((err) => console.log(err));
+		.catch((err) => (err) => {
+			const error = new Error(err);
+			error.httpStatusCode = 500;
+			return next(error);
+		});
 };
 
 exports.deleteProduct = (req, res, next) => {
@@ -165,5 +187,9 @@ exports.deleteProduct = (req, res, next) => {
 			res.redirect("/admin/products");
 			console.log("Product deleted");
 		})
-		.catch((err) => console.log(err));
+		.catch((err) => (err) => {
+			const error = new Error(err);
+			error.httpStatusCode = 500;
+			return next(error);
+		});
 };
