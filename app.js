@@ -67,29 +67,34 @@ app.use(csrf());
 // Flash error message
 app.use(flash());
 
+app.use((req, res, next) => {
+	res.locals.isAuthenticated = req.session.user
+		? req.session.user.isLoggedIn
+		: false;
+	res.locals.csrfToken = req.csrfToken();
+	next();
+});
+
 // This is to register the user
 app.use((req, res, next) => {
+	// throw new Error('Sync Dummy');
 	if (!req.session.user) {
 		return next();
 	}
 	User.findById(req.session.user.user._id)
-		.then(user => {
+		.then((user) => {
+			// throw new Error("Sync Dummy");
 			if (!user) {
 				return next();
 			}
 			req.user = user;
 			next();
 		})
-		.catch(err => {
+		.catch((err) => {
+			next(new Error(err));
 			console.log(err);
-			throw new Error(err);
+			// throw new Error(err);
 		});
-});
-
-app.use((req, res, next) => {
-	res.locals.isAuthenticated = req.session.user ? req.session.user.isLoggedIn : false;
-	res.locals.csrfToken = req.csrfToken();
-	next();
 });
 
 app.use("/admin", isAuth, adminRoutes);
@@ -103,7 +108,11 @@ app.use("/500", errorController.get500);
 app.use(errorController.get404);
 
 app.use((error, req, res, next) => {
-	res.redirect("/500");
+	// res.redirect("/500");
+	res.status(500).render("500", {
+		docTitle: "Error",
+		path: "/500",
+	});
 });
 
 
