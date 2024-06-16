@@ -38,6 +38,10 @@ router.get('/orders', isAuth, shopController.getOrders);
 // /create-order => POST Method
 router.post("/create-order", isAuth, shopController.postOrder);
 
+// Router for order invoice
+// /get-invoice => GET method
+router.get("/orders/:orderId", isAuth, shopController.getInvoice);
+
 // Router for the reset-cart path
 // /reset-cart => POST Method
 router.post("/reset-cart", isAuth, shopController.postResetCart);
