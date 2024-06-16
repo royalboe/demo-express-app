@@ -46,6 +46,8 @@ app.set("views", "views");
 
 // To get access to the public folder and link static files like css
 app.use(express.static(path.join(__dirname, "public")));
+app.use('/public/uploads', express.static(path.join(__dirname, "public/uploads")));
+// app.use('/images/', express.static(path.join(__dirname, "images")));
 
 // This allows you to access form data <Text format> submitted in POST requests via req.body in your route handlers
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -53,15 +55,17 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Storage engine for multer
 const fileStorage = multer.diskStorage({
 	destination: (req, file, cb) => {
+		// cb(null, "images");
 		cb(null, "./public/uploads/");
 	},
 	filename: (req, file, cb) => {
-		cb(null, Date.now() + "-" + file.filename + '-' + file.originalname);
+		cb(null, Date.now() + "-" + file.originalname);
 	},
 });
 
 // Function to filter by file type
 const fileFilter = (req, file, cb) => {
+	console.log(file.mimetype);
 	if (
 		file.mimetype === "image/png" ||
 		file.mimetype === "image/jpg" ||

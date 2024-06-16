@@ -10,7 +10,6 @@ exports.addProducts = (req, res, next) => {
 		validationErrors: [],
 		product: {
 			title: "",
-			imageURL: "",
 			price: "",
 			description: "",
 		},
@@ -20,11 +19,26 @@ exports.addProducts = (req, res, next) => {
 // Controller method to get product details from view and make a product object and redirects to home
 exports.postProducts = (req, res, next) => {
 	const title = req.body.title;
-	const imageURL = req.body.imageURL;
+	const image = req.file;
 	const price = req.body.price;
 	const description = req.body.description;
 	const userId = req.user._id;
 	const errors = validationResult(req);
+
+	if (!image) {
+		return res.status(422).render("admin/add-product", {
+			docTitle: "Add Product",
+			path: "/admin/add-product",
+			errorMessage: "Attached file is not an image.",
+			validationErrors: [],
+			product: {
+				title: title,
+				price: price,
+				description: description,
+			},
+		});
+	}
+	const imageURL = image.path;
 
 	if (!errors.isEmpty()) {
 		console.log('Errors found');
@@ -35,7 +49,6 @@ exports.postProducts = (req, res, next) => {
 			validationErrors: errors.array(),
 			product: {
 				title: title,
-				imageURL: imageURL,
 				price: price,
 				description: description,
 				userId,
@@ -43,12 +56,12 @@ exports.postProducts = (req, res, next) => {
 		});
 		
 	}
-
+	
 	// Create a product to save
 	const product = new Product({
 		title: title,
 		price,
-		imageURL,
+		imageURL: imageURL,
 		description,
 		userId,
 	});
@@ -57,26 +70,13 @@ exports.postProducts = (req, res, next) => {
 		.then(() => console.log("Inserted"))
 		.then(() => res.redirect("/admin/products"))
 		.catch((err) => {
-			// return res.status(500).render("admin/add-product", {
-			// 	docTitle: "Add Product",
-			// 	path: "/admin/add-product",
-			// 	errorMessage: "Database operation failed, please try again.",
-			// 	validationErrors: [],
-			// 	product: {
-			// 		title,
-			// 		imageURL,
-			// 		price,
-			// 		description
-			// 	},
-			// });
-			// res.redirect("/500");
 			const error = new Error(err);
 			error.httpStatusCode = 500;
 			return next(error);
 		});
 };
 
-// To edit a single product
+// Get method To edit a single product
 exports.editProduct = (req, res, next) => {
 	const editMode = req.query.edit;
 	if (!editMode) {
@@ -85,7 +85,6 @@ exports.editProduct = (req, res, next) => {
 	const productId = req.params.productId;
 	Product.findById(productId)
 		.then((product) => {
-			throw new Error("Dummy");
 			if (!product) {
 				return res.redirect("/admin/products");
 			}
@@ -114,7 +113,6 @@ exports.getProducts = (req, res, next) => {
 		// This will populate the userId field with the username field
 		// .populate("userId", "fullname", "email")
 		.then((products) => {
-			console.log(products);
 			res.render("admin/products", {
 				prods: products,
 				docTitle: "Admin Products",
@@ -131,13 +129,17 @@ exports.getProducts = (req, res, next) => {
 		});
 };
 
+// To update the product in the db and display
 exports.postEditProduct = (req, res, next) => {
 	const productId = req.body.productId;
 	const updatedTitle = req.body.title;
-	const updatedImageURL = req.body.imageURL;
+	const updatedImage = req.file;
 	const updatedPrice = req.body.price;
 	const updatedDescription = req.body.description;
 	const userId = req.user._id;
+
+	console.log(updatedImage);
+
 	const errors = validationResult(req);
 
 	if (!errors.isEmpty()) {
@@ -148,15 +150,13 @@ exports.postEditProduct = (req, res, next) => {
 			editing: true,
 			product: {
 				title: updatedTitle,
-				imageURL: updatedImageURL,
 				price: updatedPrice,
 				description: updatedDescription,
 				_id: productId,
 			},
 			errorMessage: errors.array()[0].msg,
 			validationErrors: errors.array(),
-		});
-		
+		});		
 	}
 
 	Product.findById(productId)
@@ -167,7 +167,9 @@ exports.postEditProduct = (req, res, next) => {
 			product.title = updatedTitle;
 			product.price = updatedPrice;
 			product.description = updatedDescription;
-			product.imageURL = updatedImageURL;
+			if (updatedImage) {
+				product.imageURL = updatedImage.path;
+			}
 			return product.save().then(() => {
 				console.log("Product updated");
 				res.redirect("/admin/products");
