@@ -3,11 +3,13 @@ const session = require("express-session");
 const MongoDbStore = require('connect-mongodb-session')(session);
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const multer = require("multer");
 const path = require("path");
 const csrf = require('csurf');
 const flash = require('connect-flash');
 
 // const { google } = require("googleapis");
+// To get environment variables from .env file
 const dotenv = require('dotenv');
 
 
@@ -18,6 +20,7 @@ const authRoutes = require("./routes/auth");
 const errorController = require("./controllers/error");
 const User = require("./models/users");
 
+// Initiate environment variables
 dotenv.config();
 
 const MONGODB_URI = require("./util/database").MONGODB_URI;
@@ -44,8 +47,34 @@ app.set("views", "views");
 // To get access to the public folder and link static files like css
 app.use(express.static(path.join(__dirname, "public")));
 
-// This allows you to access form data submitted in POST requests via req.body in your route handlers
+// This allows you to access form data <Text format> submitted in POST requests via req.body in your route handlers
 app.use(bodyParser.urlencoded({ extended: false }));
+
+// Storage engine for multer
+const fileStorage = multer.diskStorage({
+	destination: (req, file, cb) => {
+		cb(null, "./public/uploads/");
+	},
+	filename: (req, file, cb) => {
+		cb(null, new Date().toISOString() + "-" + file.filename + '-' + file.originalname);
+	},
+});
+
+// Function to filter by file type
+const fileFilter = (req, file, cb) => {
+	if (
+		file.mimetype === "image/png" ||
+		file.mimetype === "image/jpg" ||
+		file.mimetype === "image/jpeg"
+	) {
+		cb(null, true);
+	} else {
+		cb(null, false);
+	}
+};
+
+// This allows you access files from forms.=, the .single function is to select the file name
+app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single("image"));
 
 // Store session in database
 const store = new MongoDbStore({
