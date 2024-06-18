@@ -24,6 +24,11 @@ exports.getLogin = (req, res, next) => {
 	} else {
 		errorMessage = null;
 	}
+
+	if (req.session.user) {
+		return res.redirect("/");
+	}
+
 	// To get the login page
 	res.render("auth/login", {
 		path: "/login",
