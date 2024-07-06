@@ -28,16 +28,13 @@
                                 </div>
                                 <% if (isAuthenticated) { %>
                                     <div class="card__actions">
-                                        <%- include('../includes/add-to-cart.ejs', {product: product}) %>
+                                        <%- include('../includes/add-to-cart.ejs', {product}) %>
                                     </div>
                                 <% } %>
                             </article>
                             <% } %>
                     </div>
-                    <section class="pagination">
-                        <a href="/?page1">1</a>
-                        <a>2</a>
-                    </section>
+                    <%- include('../includes/pagination.ejs', {isNotPageOne, hasPreviousPage, hasNextPage, currentPage, nextPage, lastPage, previousPage}) %>
                     <% } else { %>
                         <h1>No Products Found!</h1>
                         <% } %>

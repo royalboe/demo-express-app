@@ -4,17 +4,35 @@ const fs = require("fs");
 const PDFDocument = require("pdfkit");
 const path = require("path");
 
+const ITEMS_PER_PAGE = 1;
+
 // Renders view-products view
 exports.getProducts = (req, res, next) => {
+	// Get the current page
+	const page = +req.query.page || 1;
+	let totalItems;
+
 	Product.find()
-		// .fetchAll()
+		.countDocuments()
+		.then((numProducts) => {
+			totalItems = numProducts;
+			return Product.find()
+				.skip((page - 1) * ITEMS_PER_PAGE)
+				.limit(ITEMS_PER_PAGE);
+		})
 		.then((products) => {
-			res.render("shop/view-products", {
+			res.render("shop/products", {
 				prods: products,
-				docTitle: "All Products",
+				docTitle: "Products",
 				path: "/products",
 				hasProducts: products.length > 0,
-				isAuthenticated: req.session.user ? req.session.user.isLoggedIn : false,
+				isNotPageOne: page !== 1 && page - 1 !== 1,
+				currentPage: page,
+				hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+				hasPreviousPage: page > 1,
+				nextPage: page + 1,
+				previousPage: page - 1,
+				lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE),
 			});
 		})
 		.catch((err) => {
@@ -46,17 +64,32 @@ exports.getProductDetails = (req, res, next) => {
 
 // Renders index view for home
 exports.getIndex = (req, res, next) => {
-	// Fetches all products from the database
+	// Get the current page
+	const page = +req.query.page || 1;
+	let totalItems;
+
 	Product.find()
-		// .fetchAll()
+		.countDocuments()
+		.then((numProducts) => {
+			totalItems = numProducts;
+			return Product.find()
+				.skip((page - 1) * ITEMS_PER_PAGE)
+				.limit(ITEMS_PER_PAGE);
+		})
 		.then((products) => {
+			console.log(`${page}, ${typeof page}`);
 			res.render("shop/index", {
 				prods: products,
 				docTitle: "Shop",
 				path: "/",
 				hasProducts: products.length > 0,
-				// isAuthenticated: req.session.user ? req.session.user.isLoggedIn : false,
-				// csrfToken: req.csrfToken(),
+				isNotPageOne: page !== 1 && page - 1 !== 1,
+				currentPage: page,
+				hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+				hasPreviousPage: page > 1,
+				nextPage: page + 1,
+				previousPage: page - 1,
+				lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE),
 			});
 		})
 		.catch((err) => {
@@ -214,12 +247,10 @@ exports.getInvoice = (req, res, next) => {
 			pdfDoc.text("_______________________________");
 			pdfDoc.text(" ");
 			pdfDoc.fontSize(14).text("Invoice# " + order._id, 20, 110);
-			pdfDoc.fontSize(14).text("Invoice Date: " + new Date(Date.now()).toDateString());
 			pdfDoc
 				.fontSize(14)
-				.text(
-					`Invoice To: ${order.user.email} `
-				);
+				.text("Invoice Date: " + new Date(Date.now()).toDateString());
+			pdfDoc.fontSize(14).text(`Invoice To: ${order.user.email} `);
 			pdfDoc.fontSize(30).text("_______________________________", 20, 140);
 			pdfDoc.fontSize(14).text(" ");
 
@@ -233,15 +264,15 @@ exports.getInvoice = (req, res, next) => {
 
 			pdfDoc.fontSize(30).text("_______________________________", 20, 170);
 			let totalPrice = 0;
-		  let item = 1;
+			let item = 1;
 			const fsize = 14;
 			const ystart = 210;
 			const xstart = 40;
 			const yinc = fsize + 20;
 			let ycoord = ystart + (item - 1) * yinc;
-		
+
 			// products.forEach(prod => {
-			order.items.forEach(prod => {
+			order.items.forEach((prod) => {
 				console.log(prod);
 				totalPrice += prod.quantity * prod.product.price;
 				console.log(totalPrice);
@@ -252,13 +283,13 @@ exports.getInvoice = (req, res, next) => {
 				item++;
 				ycoord = ystart + (item - 1) * fsize;
 			});
-			
+
 			pdfDoc.fontSize(30).text("_______________________________", 20, ycoord);
 			pdfDoc.fontSize(20).text(" Total: $" + totalPrice, 400, ycoord + 40);
 			pdfDoc
 				.fontSize(30)
 				.text("_______________________________", 20, ycoord + 40);
-			
+
 			console.log("About to close the stream!");
 			pdfDoc.end();
 			console.log("Stream closed");
