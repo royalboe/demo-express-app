@@ -77,7 +77,6 @@ exports.getIndex = (req, res, next) => {
 				.limit(ITEMS_PER_PAGE);
 		})
 		.then((products) => {
-			console.log(`${page}, ${typeof page}`);
 			res.render("shop/index", {
 				prods: products,
 				docTitle: "Shop",
