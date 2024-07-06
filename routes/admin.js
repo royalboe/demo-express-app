@@ -17,7 +17,19 @@ router.post(
 	"/add-product",
 	[
 		body("title").isString().isLength({ min: 3 }).trim(),
-		body("imageURL").isURL(),
+		check("image")
+			.custom((value, { req }) => {
+				if (
+					req.file.mimetype === "image/png" ||
+					req.file.mimetype === "image/jpg" ||
+					req.file.mimetype === "image/jpeg"
+				) {
+					return ".jpg/.png/.jpeg";
+				} else {
+					return false;
+				}
+			})
+			.withMessage("Please submit a jpg, jpeg or png image file, thank you"),
 		body("price").isFloat(),
 		body("description").isLength({ min: 10, max: 400 }).trim(),
 	],
@@ -32,7 +44,19 @@ router.post(
 	"/edit-product",
 	[
 		body("title").isString().isLength({ min: 3 }).trim(),
-		body("imageURL").isURL(),
+		// check("image")
+		// 	.custom((value, { req }) => {
+		// 		if (
+		// 			req.file.mimetype === "image/png" ||
+		// 			req.file.mimetype === "image/jpg" ||
+		// 			req.file.mimetype === "image/jpeg"
+		// 		) {
+		// 			return ".jpg/.png/.jpeg";
+		// 		} else {
+		// 			return false;
+		// 		}
+		// 	})
+		// 	.withMessage("Please submit a jpg, jpeg or png image file, thank you"),
 		body("price").isFloat(),
 		body("description").isLength({ min: 10, max: 400 }).trim(),
 	],

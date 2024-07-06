@@ -44,3 +44,9 @@ npm install --save dotenv
 
 # For Express validator
 npm install --save express-validator
+
+# multer
+npm install --save multer
+
+#Pdfkit
+npm install --save pdfkit
