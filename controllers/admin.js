@@ -2,6 +2,9 @@ const Product = require("../models/product");
 const { validationResult } = require("express-validator");
 const fileHelper = require("../util/file");
 
+
+const ITEMS_PER_PAGE = 1;
+
 // Renders the add product view to give product details
 exports.addProducts = (req, res, next) => {
 	res.render("admin/add-product", {
@@ -106,8 +109,42 @@ exports.editProduct = (req, res, next) => {
 		});
 };
 
-// Controller to render the admin product page
 exports.getProducts = (req, res, next) => {
+	// Get the current page
+	const page = +req.query.page || 1;
+	let totalItems;
+
+	Product.find()
+		.countDocuments()
+		.then((numProducts) => {
+			totalItems = numProducts;
+			return Product.find()
+				.skip((page - 1) * ITEMS_PER_PAGE)
+				.limit(ITEMS_PER_PAGE);
+		})
+		.then((products) => {
+			res.render("admin/products", {
+				prods: products,
+				docTitle: "Admin Products",
+				path: "/admin/products",
+				hasProducts: products.length > 0,
+				isNotPageOne: page !== 1 && page - 1 !== 1,
+				currentPage: page,
+				hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+				hasPreviousPage: page > 1,
+				nextPage: page + 1,
+				previousPage: page - 1,
+				lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE),
+			});
+		})
+		.catch((err) => {
+			const error = new Error(err);
+			error.httpStatusCode = 500;
+			return next(error);
+		});
+};
+// Controller to render the admin product page
+exports.getAllProducts = (req, res, next) => {
 	Product.find({ userId: req.user._id })
 		// This will return all products and select fields to be returned
 		// .select("title price -_id imageURL description")
