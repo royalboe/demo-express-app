@@ -212,6 +212,7 @@ exports.postEditProduct = (req, res, next) => {
 						next(new Error(err));
 					});
 				product.imageURL = updatedImage.path;
+				console.log(product.imageURL);
 			}
 			return product.save().then(() => {
 				console.log("Product updated");
