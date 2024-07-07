@@ -109,12 +109,12 @@ exports.editProduct = (req, res, next) => {
 		});
 };
 
-exports.getProducts = (req, res, next) => {
+exports.getAllProducts = (req, res, next) => {
 	// Get the current page
 	const page = +req.query.page || 1;
 	let totalItems;
 
-	Product.find()
+	Product.find({ userId: req.user._id })
 		.countDocuments()
 		.then((numProducts) => {
 			totalItems = numProducts;
@@ -144,7 +144,7 @@ exports.getProducts = (req, res, next) => {
 		});
 };
 // Controller to render the admin product page
-exports.getAllProducts = (req, res, next) => {
+exports.getProducts = (req, res, next) => {
 	Product.find({ userId: req.user._id })
 		// This will return all products and select fields to be returned
 		// .select("title price -_id imageURL description")
@@ -226,7 +226,7 @@ exports.postEditProduct = (req, res, next) => {
 };
 
 exports.deleteProduct = (req, res, next) => {
-	const productId = req.body.productId;
+	const productId = req.params.productId;
 	Product.findById(productId)
 		.then((product) => {
 			if (!product) {
@@ -236,12 +236,10 @@ exports.deleteProduct = (req, res, next) => {
 			return Product.deleteOne({ _id: productId, userId: req.user._id });
 		})
 		.then(() => {
-			res.redirect("/admin/products");
+			res.status(200).json({message: 'Success'});
 			console.log("Product deleted");
 		})
 		.catch((err) => {
-			const error = new Error(err);
-			error.httpStatusCode = 500;
-			return next(error);
+			res.status(500).json({message: 'Deleting product failed'});
 		});		
 };

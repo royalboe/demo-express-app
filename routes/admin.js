@@ -64,7 +64,7 @@ router.post(
 );
 
 // /admin/delete-product => POST Method
-router.post('/delete-product', adminController.deleteProduct);
+router.delete('/product/:productId', adminController.deleteProduct);
 
 // router.post('/add-user', adminController.addUser);
 
