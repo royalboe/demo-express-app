@@ -42,7 +42,6 @@ exports.postProducts = (req, res, next) => {
 			},
 		});
 	}
-	const imageURL = image.path;
 
 	if (!errors.isEmpty()) {
 		console.log('Errors found');
@@ -58,8 +57,9 @@ exports.postProducts = (req, res, next) => {
 				userId,
 			},
 		});
-		
 	}
+
+	const imageURL = image.path.replace(/\\/g, "/");
 	
 	// Create a product to save
 	const product = new Product({
@@ -143,6 +143,7 @@ exports.getAllProducts = (req, res, next) => {
 			return next(error);
 		});
 };
+
 // Controller to render the admin product page
 exports.getProducts = (req, res, next) => {
 	Product.find({ userId: req.user._id })
@@ -186,6 +187,7 @@ exports.postEditProduct = (req, res, next) => {
 			docTitle: "Edit Product",
 			path: "/admin/edit-product",
 			editing: true,
+			hasError: true,
 			product: {
 				title: updatedTitle,
 				price: updatedPrice,
@@ -211,7 +213,9 @@ exports.postEditProduct = (req, res, next) => {
 						console.log(err);
 						next(new Error(err));
 					});
-				product.imageURL = updatedImage.path;
+				
+				/** .replace to replace '\' with '/' in path */
+				product.imageURL = updatedImage.path.replace(/\\/g, '/');
 				console.log(product.imageURL);
 			}
 			return product.save().then(() => {
