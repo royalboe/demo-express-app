@@ -154,6 +154,6 @@ mongoose
 	.connect(MONGODB_URI)
 	.then(() => {
 		console.log("Connected");
-		app.listen(3000);
+		app.listen(80);
 	})
 	.catch((err) => console.log(err));
